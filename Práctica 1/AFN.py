@@ -12,10 +12,10 @@ class AFN:
 			self.Estados_Aceptacion = set ()
 		#Si se recibe un simbolo, se crea un AFN básico
 		else:
-			#Se crea un estado final de tipo Estado
+			#Se crea un estado inicial de tipo Estado como atributo del AFN
 			self.Estado_Inicial = Estado ()
 			#Se crea un estado final de tipo Estado
-			self.Estado_Final = Estado ()
+			Estado_Final = Estado ()
 			#Se cambia el estado de la bandera a true para saber que es estado final
 			Estado_Final.Estado_Aceptacion = True
 			#El conjunto del alfabeto se inicializa como un conjunto vacío
@@ -53,4 +53,8 @@ class Transiciones:
 	def get_simbolo_max (self):
 		return self.simbolo_max
 
+#Id para cada uno de los estados creados
 id_global = 0
+
+simbolo = input ('Ingresa un simbolo: ')
+automata = AFN (simbolo)
