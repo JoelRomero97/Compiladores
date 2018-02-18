@@ -1,3 +1,6 @@
+import os
+import sys
+
 class AFN:
 	def __init__ (self, simbolo = '\0'):
 		#Si no se recibe ningun simbolo, se inicializa todo a vacío
@@ -10,6 +13,7 @@ class AFN:
 			self.Estados = set ()
 			#El conjunto de estados de aceptación se inicializa como un conjunto vacío
 			self.Estados_Aceptacion = set ()
+			print ('No se recibió simbolo')
 		#Si se recibe un simbolo, se crea un AFN básico
 		else:
 			#Se crea un estado inicial de tipo Estado como atributo del AFN
@@ -25,7 +29,8 @@ class AFN:
 			#El conjunto de estados de aceptación se inicializa como un conjunto vacío
 			self.Estados_Aceptacion = set ()
 			#Se agrega una transición del estado inicial al estado final con el caracter 'simbolo'
-			Estado_Inicial.AddTransition (s, Estado_Final)
+			#Estado_Inicial.AddTransition (s, Estado_Final)
+			print ('Se ingreso un simbolo')
 
 class Estado:
 	def __init__ (self):
@@ -53,8 +58,52 @@ class Transiciones:
 	def get_simbolo_max (self):
 		return self.simbolo_max
 
-#Id para cada uno de los estados creados
+def Crear ():
+	os.system ("cls")
+	simbolo = input ('\n\n¿Con qué simbolo deseas crear el AFN? ')
+
+def Unir ():
+	os.system ("cls")
+
+def Concatenar ():
+	os.system ("cls")
+
+def Positiva ():
+	os.system ("cls")
+
+def Kleene ():
+	os.system ("cls")
+
+def Opcional ():
+	os.system ("cls")
+
+def Validacion ():
+	os.system ("cls")
+
+def Salir ():
+	sys.exit ()
+
+def Menu ():
+	os.system ("cls")
+	#Diccionario para seleccionar la opcion que desee el usuario
+	funciones = {1:Crear, 2:Unir, 3:Concatenar, 4:Positiva, 5:Kleene, 6:Opcional, 7:Validacion, 8:Salir}
+	option = 1
+	while option < 8 and option > 0:
+		print ('\n\n')
+		print ('\t\tMENÚ\n\n')
+		print ('1. Crear AFN básico')
+		print ('2. Unir AFN\'s')
+		print ('3. Concatenar AFN\'s')
+		print ('4. Operación cerradura +')
+		print ('5. Operación cerradura *')
+		print ('6. Operación ?')
+		print ('7. Validar cadena')
+		print ('8. Salir\n\n\n')
+		option = int (input ('Selecciona una opción: '))
+		#Llamar a la función según la opción seleccionada
+		funciones [option] ()
+
+#Main
 id_global = 0
 
-simbolo = input ('Ingresa un simbolo: ')
-automata = AFN (simbolo)
+Menu ()
