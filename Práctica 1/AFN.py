@@ -2,9 +2,9 @@ import os
 import sys
 
 class AFN:
-	def __init__ (self, simbolo = '\0'):
+	def __init__ (self, simbolo):
 		#Si no se recibe ningun simbolo, se inicializa todo a vacío
-		if simbolo == '\0':
+		if (len (simbolo) == 0):
 			#Inicialización del estado inicial a 'null'
 			self.Estado_Inicial = None
 			#El conjunto del alfabeto se inicializa como un conjunto vacío
@@ -13,7 +13,6 @@ class AFN:
 			self.Estados = set ()
 			#El conjunto de estados de aceptación se inicializa como un conjunto vacío
 			self.Estados_Aceptacion = set ()
-			print ('No se recibió simbolo')
 		#Si se recibe un simbolo, se crea un AFN básico
 		else:
 			#Se crea un estado inicial de tipo Estado como atributo del AFN
@@ -29,8 +28,7 @@ class AFN:
 			#El conjunto de estados de aceptación se inicializa como un conjunto vacío
 			self.Estados_Aceptacion = set ()
 			#Se agrega una transición del estado inicial al estado final con el caracter 'simbolo'
-			#Estado_Inicial.AddTransition (s, Estado_Final)
-			print ('Se ingreso un simbolo')
+			#Estado_Inicial.AddTransition (simbolo, Estado_Final)
 
 class Estado:
 	def __init__ (self):
@@ -44,9 +42,9 @@ class Estado:
 		self.transiciones = set ()
 
 class Transiciones:
-	def __init__ (self, edo_salida, simbolo_min, simbolo_max = '\0'):
+	def __init__ (self, edo_salida, simbolo_min, simbolo_max):
 		self.simbolo_min = simbolo_min
-		if simbolo_max == '\0':
+		if (len (simbolo_max) == 0):
 			self.simbolo_max = simbolo_min
 		else:
 			self.simbolo_max = simbolo_max
@@ -60,7 +58,11 @@ class Transiciones:
 
 def Crear ():
 	os.system ("cls")
-	simbolo = input ('\n\n¿Con qué simbolo deseas crear el AFN? ')
+	simbolo = input ('\n\n\n¿Con qué simbolo deseas crear el AFN?\t')
+	Automata = AFN (simbolo)
+	print ('\n\n\nAutomata básico con símbolo \'' + simbolo + '\' creado correctamente.\n\n\n')
+	num_automata = int (input ('¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
+	Automatas.insert (num_automata, Automata)
 
 def Unir ():
 	os.system ("cls")
@@ -99,11 +101,13 @@ def Menu ():
 		print ('6. Operación ?')
 		print ('7. Validar cadena')
 		print ('8. Salir\n\n\n')
-		option = int (input ('Selecciona una opción: '))
+		option = int (input ('Selecciona una opción:\t'))
 		#Llamar a la función según la opción seleccionada
 		funciones [option] ()
 
 #Main
 id_global = 0
+#Lista vacía para guardar los automatas creados por el usuario
+Automatas = []
 
 Menu ()
