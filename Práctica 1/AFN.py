@@ -23,14 +23,19 @@ class AFN:
 			Estado_Final.Estado_Aceptacion = True
 			#El conjunto del alfabeto se inicializa como un conjunto vacío
 			self.Alfabeto = set ()
-			#Se agrega el símolo al alfabeto del AFN
-			self.Alfabeto.add (simbolo)
+			#Se agrega el símolo al alfabeto del AFN (si es un rango, se añaden todos los simbolos)
+			if (len (simbolo) == 1):
+				self.Alfabeto.add (simbolo)
+			else:
+				for i in range (ord (simbolo [0]), ord (simbolo [2]) + 1):
+					self.Alfabeto.add (chr (i))
 			#El conjunto de estados se inicializa como un conjunto vacío
 			self.Estados = set ()
 			#El conjunto de estados de aceptación se inicializa como un conjunto vacío
 			self.Estados_Aceptacion = set ()
 			#Se agrega una transición del estado inicial al estado final con el caracter 'simbolo'
 			(self.Estado_Inicial).AddTransition (simbolo, Estado_Final)
+	
 	def Unir_AFN (self, AFN_2):
 		Nuevo_Inicio = Estado ()
 		Nuevo_Fin = Estado ()
@@ -71,20 +76,17 @@ class Transicion:
 	def get_simbolo_max (self):
 		return self.simbolo_max
 
-	def get_transicion (self):
-		return self.simbolo_min + ') = ' + str (self.estado_siguiente.id_estado)
-
 def Crear ():
 	os.system ("cls")
+	#Simbolo para crear el AFN Básico
 	simbolo = input ('\n\n\n¿Con qué simbolo deseas crear el AFN?\t')
+	#Se crea el AFN con el símbolo seleccionado por el usuario
 	Automata = AFN (simbolo)
 	print ('\n\n\nAutomata básico con símbolo \'' + simbolo + '\' creado correctamente.\n\n\n')
-	aux = list (Automata.Estado_Inicial.Transiciones)
-	a = aux [0].get_transicion ()
-	print ('Transición: (', Automata.Estado_Inicial.id_estado, ',' + a)
+	print ('Alfabeto: ', Automata.Alfabeto)
 	num_automata = int (input ('¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
-	Automatas.insert (num_automata, Automata)
-	print ('\n\n\n\n', Automatas)
+	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	Automatas [num_automata] = Automata
 
 def Unir ():
 	os.system ("cls")
@@ -110,14 +112,16 @@ def Validacion ():
 	os.system ("cls")
 
 def Salir ():
+	for i in range (len (Automatas)):
+		Automatas.pop ()
 	sys.exit ()
 
 def Menu ():
-	os.system ("cls")
 	#Diccionario para seleccionar la opcion que desee el usuario
 	funciones = {1:Crear, 2:Unir, 3:Concatenar, 4:Positiva, 5:Kleene, 6:Opcional, 7:Validacion, 8:Salir}
 	option = 1
 	while option < 8 and option > 0:
+		os.system ("cls")
 		print ('\n\n')
 		print ('\t\tMENÚ\n\n')
 		print ('1. Crear AFN básico')
@@ -132,7 +136,7 @@ def Menu ():
 		#Llamar a la función según la opción seleccionada
 		funciones [option] ()
 
-#Lista vacía para guardar los automatas creados por el usuario
-Automatas = []
+#Lista de 3 elementos para guardar los automatas creados por el usuario
+Automatas = [1, 2, 3]
 
 Menu ()
