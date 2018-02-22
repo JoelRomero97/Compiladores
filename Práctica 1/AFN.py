@@ -26,7 +26,10 @@ class AFN:
 			#Se agrega el símolo al alfabeto del AFN (si es un rango, se añaden todos los simbolos)
 			if (len (simbolo) == 1):
 				self.Alfabeto.add (simbolo)
+				#Se agrega una transición del estado inicial al estado final con el caracter 'simbolo'
+				(self.Estado_Inicial).AddTransition (Estado_Final, simbolo)
 			else:
+				(self.Estado_Inicial).AddTransition (Estado_Final, simbolo [0], simbolo [2])
 				for i in range (ord (simbolo [0]), ord (simbolo [2]) + 1):
 					self.Alfabeto.add (chr (i))
 			#El conjunto de estados se inicializa como un conjunto vacío
@@ -38,8 +41,6 @@ class AFN:
 			self.Estados_Aceptacion = set ()
 			#Se agrega el estado final del AFN como un estado de aceptación
 			self.Estados_Aceptacion.add (Estado_Final)
-			#Se agrega una transición del estado inicial al estado final con el caracter 'simbolo'
-			(self.Estado_Inicial).AddTransition (Estado_Final, simbolo)
 	
 	def Unir_AFN (self, AFN_2):
 		#Se crea un nuevo estado inicial
@@ -218,7 +219,7 @@ class AFN:
 			#Recorremos cada una de las transiciones del estado
 			for t in Estado.Transiciones:
 				#Si la transicion con ese simbolo nos lleva a un estado
-				if (t.simbolo_min == simbolo):
+				if ((t.simbolo_min <= simbolo) and (t.simbolo_max >= simbolo)):
 					#Agregamos el estado siguiente al conjunto solucion de estados
 					Conjunto_Estados.add (t.estado_siguiente)
 		return Conjunto_Estados
