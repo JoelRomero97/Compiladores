@@ -437,6 +437,6 @@ def Menu ():
 		funciones [option] ()
 
 #Lista de 3 elementos para guardar los automatas creados por el usuario
-Automatas = [1, 2, 3]
+Automatas = ['a1', 'a2', 'a3']
 
 Menu ()
