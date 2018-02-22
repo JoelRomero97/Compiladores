@@ -176,6 +176,71 @@ class AFN:
 		self.Estado_Inicial = Nuevo_Inicio
 		return self
 
+	def Cerradura_Epsilon (self, Estado, Conjunto = False):
+		Conjunto_Estados = set ()
+		pila = []
+		#Si 'Estado' es un conjunto
+		if (Conjunto == True):
+			#Recorremos cada uno de los estados del conjunto de estados
+			for e in Estado:
+				#Agregamos al conjunto solucion la cerradura epsilon de cada estado
+				Conjunto_Estados = Conjunto_Estados.union (self.Cerradura_Epsilon (e))
+		else:
+			#Agregamos el estado a la pila para analizarlo
+			pila.append (Estado)
+			#Mientras la pila tenga elementos
+			while (len (pila) > 0):
+				#Sacamos el ultimo elemento de la pila
+				Estado_Aux = pila.pop ()
+				#Si no está contenido ese estado en el conjunto, lo agregamos
+				if (Estado_Aux not in Conjunto_Estados):
+					Conjunto_Estados.add (Estado_Aux)
+					for t in Estado_Aux.Transiciones:
+						#Si la transicion de ese estado nos lleva a un estado con epsilon
+						if (len (t.simbolo_min) == 0):
+							#Se agrega a la pila para ser analizado
+							pila.append (t.estado_siguiente)
+		return Conjunto_Estados
+
+	def Mover (self, Estado, simbolo, Conjunto = False):
+		Conjunto_Estados = set ()
+		#Si 'Estado' es un conjunto
+		if (Conjunto == True):
+			#Recorremos cada uno de los estados del conjunto de estados
+			for e in Estado:
+				#Agregamos al conjunto solucion la operacion mover de cada estado
+				Conjunto_Estados = Conjunto_Estados.union (self.Mover (e, simbolo))
+		else:
+			#Recorremos cada una de las transiciones del estado
+			for t in Estado.Transiciones:
+				#Si la transicion con ese simbolo nos lleva a un estado
+				if (t.simbolo_min == simbolo):
+					#Agregamos el estado siguiente al conjunto solucion de estados
+					Conjunto_Estados.add (t.estado_siguiente)
+		return Conjunto_Estados
+
+	def Ir_A (self, Estado, simbolo):
+		Conjunto_Estados = set ()
+		#Se calcula la operación mover de todo el conjunto recibido
+		Conjunto_Estados = Conjunto_Estados.union (self.Mover (Estado, simbolo, True))
+		#Se retorna la operación cerradura epsilon de todo el conjunto resultado de la operación mover
+		return self.Cerradura_Epsilon (Conjunto_Estados, True)
+
+	def Validar_Cadena (self, cadena):
+		#Conjunto de estados para obtener la cerradura epsilon
+		Conjunto_Estados = set ()
+		#Calculamos la cerradura epsilon del estado inicial del AFN
+		Conjunto_Estados = self.Cerradura_Epsilon (self.Estado_Inicial)
+		for simbolo in cadena:
+			#Calculamos la operacion Ir_A de cada estado con cada simbolo de la cadena
+			Conjunto_Estados = self.Ir_A (Conjunto_Estados, simbolo)
+			if (len (Conjunto_Estados) == 0):
+				return False
+		for estado in self.Estados_Aceptacion:
+			if (estado in Conjunto_Estados):
+				return True
+		return False
+
 	def get_estados (self):
 		a = set ()
 		for e in self.Estados:
@@ -279,7 +344,7 @@ def Positiva ():
 	os.system ("cls")
 	automata1 = int (input ('\n\n\nSelecciona el autómata sobre el que deseas aplicar la operación +:\t')) - 1
 	Automata = AFN ()
-	#Se unen los AFN seleccionados y se guarda en otro AFN
+	#Se calcula la cerradura positiva del AFN
 	Automata = (Automatas [automata1]).Cerradura_Positiva ()
 	print ('\n\nAlfabeto: ', Automata.Alfabeto)
 	print ('\n\nEstados: ', Automata.get_estados ())
@@ -293,7 +358,7 @@ def Kleene ():
 	os.system ("cls")
 	automata1 = int (input ('\n\n\nSelecciona el autómata sobre el que deseas aplicar la operación *:\t')) - 1
 	Automata = AFN ()
-	#Se unen los AFN seleccionados y se guarda en otro AFN
+	#Se calcula la cerradura de kleene del AFN
 	Automata = (Automatas [automata1]).Cerradura_Kleene ()
 	print ('\n\nAlfabeto: ', Automata.Alfabeto)
 	print ('\n\nEstados: ', Automata.get_estados ())
@@ -307,7 +372,7 @@ def Opcional ():
 	os.system ("cls")
 	automata1 = int (input ('\n\n\nSelecciona el autómata sobre el que deseas aplicar la operación ?:\t')) - 1
 	Automata = AFN ()
-	#Se unen los AFN seleccionados y se guarda en otro AFN
+	#Se calcula la cerradura opcional del AFN
 	Automata = (Automatas [automata1]).Cerradura_Opcional ()
 	print ('\n\nAlfabeto: ', Automata.Alfabeto)
 	print ('\n\nEstados: ', Automata.get_estados ())
@@ -319,6 +384,27 @@ def Opcional ():
 
 def Validacion ():
 	os.system ("cls")
+	#Cadena a ser validada
+	cadena = ''
+	flag = True
+	automata1 = int (input ('\n\n\nSelecciona el autómata sobre el que deseas validar cadenas:\t')) - 1
+	#Obtenemos el automata deseado en un AFN
+	Automata = AFN ()
+	Automata = (Automatas [automata1])
+	while ((cadena != 'Salir') and (cadena != 'salir')):
+		os.system ("cls")
+		print ('\n\n\nEscribe \'Salir\' o \'salir\' para terminar regresar al menu principal')
+		cadena = input ('\n\nIngresa una cadena para ser validada:\t')
+		if ((cadena == 'Salir') or (cadena == 'salir')):
+			break
+		flag = Automata.Validar_Cadena (cadena)
+		#Si la cadena es aceptada
+		if (flag == True):
+			print ('\n\nLa cadena \'' + cadena + '\' es aceptada por el AFN :)')
+			input ('\n\n\n\nPresiona cualquier tecla para continuar...')
+		else:
+			print ('\n\nLa cadena \'' + cadena + '\' no es aceptada por el AFN :(')
+			input ('\n\n\n\nPresiona cualquier tecla para continuar...')
 
 def Salir ():
 	for i in range (len (Automatas)):
