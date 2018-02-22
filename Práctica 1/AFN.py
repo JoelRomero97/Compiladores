@@ -2,7 +2,7 @@ import os
 import sys
 
 class AFN:
-	def __init__ (self, simbolo):
+	def __init__ (self, simbolo = ''):
 		#Si no se recibe ningun simbolo, se inicializa todo a vacío
 		if (len (simbolo) == 0):
 			#Inicialización del estado inicial a 'null'
@@ -31,16 +31,75 @@ class AFN:
 					self.Alfabeto.add (chr (i))
 			#El conjunto de estados se inicializa como un conjunto vacío
 			self.Estados = set ()
+			#Se agregan los estados al conjunto de Estados del AFN
+			self.Estados.add (self.Estado_Inicial)
+			self.Estados.add (Estado_Final)
 			#El conjunto de estados de aceptación se inicializa como un conjunto vacío
 			self.Estados_Aceptacion = set ()
+			#Se agrega el estado final del AFN como un estado de aceptación
+			self.Estados_Aceptacion.add (Estado_Final)
 			#Se agrega una transición del estado inicial al estado final con el caracter 'simbolo'
-			(self.Estado_Inicial).AddTransition (simbolo, Estado_Final)
+			(self.Estado_Inicial).AddTransition (Estado_Final, simbolo)
 	
 	def Unir_AFN (self, AFN_2):
+		#Se crea un nuevo estado inicial
 		Nuevo_Inicio = Estado ()
+		#Se crea un nuevo estado final
 		Nuevo_Fin = Estado ()
-		Nuevo_Inicio.AddTransition ('\0', self.Estado_Inicial)
-		Nuevo_Inicio.AddTransition ('\0', AFN_2.Estado_Inicial)
+		#Se agrega una transición del nuevo estado inicial al estado inicial del AFN_1
+		Nuevo_Inicio.AddTransition (self.Estado_Inicial, '')
+		#Se agrega una transición del nuevo estado inicial al estado inicial del AFN_2
+		Nuevo_Inicio.AddTransition (AFN_2.Estado_Inicial, '')
+		#Agregar una transición con epsilon de todos los estados finales al nuevo fin
+		for e in self.Estados_Aceptacion:
+			e.AddTransition (Nuevo_Fin, '')
+			e.Estado_Aceptacion = False
+		#Agregar una transición con epsilon de todos los estados finales al nuevo fin
+		for e in AFN_2.Estados_Aceptacion:
+			e.AddTransition (Nuevo_Fin, '')
+			e.Estado_Aceptacion = False
+		#Eliminar los estados de aceptación de ambos automatas
+		self.Estados_Aceptacion = set ()
+		AFN_2.Estados_Aceptacion = set ()
+		#Agregar el nuevo estado de inicio al conjunto de estados del nuevo AFN
+		self.Estados.add (Nuevo_Inicio)
+		#Agregar el nuevo estado final al conjunto de estados del nuevo AFN
+		self.Estados.add (Nuevo_Fin)
+		#Se hace la union de alfabetos
+		self.Estados = self.Estados.union (AFN_2.Estados)
+		#Se asigna el estatus de estado de aceptación al nuevo estado final
+		Nuevo_Fin.Estado_Aceptacion = True
+		#Se agrega el nuevo estado final al conjunto de estados de aceptación
+		self.Estados_Aceptacion.add (Nuevo_Fin)
+		#Se actualiza el estado inicial del AFN
+		self.Estado_Inicial = Nuevo_Inicio
+		#Se actualiza el alfabeto del AFN con la unión de los alfabetos
+		self.Alfabeto = (self.Alfabeto).union (AFN_2.Alfabeto)
+		return self
+
+	def Concatenar_AFN (self, AFN_2):
+		#Cambiar las transiciones del estado inicial del AFN 2
+		for e in self.Estados_Aceptacion:
+			for t in AFN_2.Estado_Inicial.Transiciones:
+				#Al estado final del AFN_1 se le agregan las transiciones del estado inicial de AFN_2
+				e.AddTransition (t.estado_siguiente, t.simbolo_min, t.simbolo_max)
+		return self
+
+	def get_estados (self):
+		a = set ()
+		for e in self.Estados:
+			a.add (e.id_estado)
+		return a
+
+	def get_estado_inicial (self):
+		a = self.Estado_Inicial.id_estado
+		return a
+
+	def get_edos_aceptacion (self):
+		a = set ()
+		for e in self.Estados_Aceptacion:
+			a.add (e.id_estado)
+		return a
 
 class Estado:
 	#Id para cada uno de los estados creados
@@ -56,18 +115,21 @@ class Estado:
 		#El conjunto de transiciones se inicializa como un conjunto vacío
 		self.Transiciones = set ()
 
-	def AddTransition (self, simbolo, estado_siguiente):
+	def AddTransition (self, estado_siguiente, simbolo_min, simbolo_max = ''):
 		#Si solo se ingresa un simbolo
-		if (len (simbolo) == 1):
-			(self.Transiciones).add (Transicion (simbolo, simbolo, estado_siguiente))
+		if (len (simbolo_max) == 0):
+			(self.Transiciones).add (Transicion (estado_siguiente, simbolo_min))
 		#Si se ingresa un rango
 		else:
-			(self.Transiciones).add (Transicion (simbolo [0], simbolo [2], estado_siguiente))
+			(self.Transiciones).add (Transicion (estado_siguiente, simbolo_min, simbolo_max))
 
 class Transicion:
-	def __init__ (self, simbolo_min, simbolo_max, estado_siguiente):
+	def __init__ (self, estado_siguiente, simbolo_min, simbolo_max = ''):
 		self.simbolo_min = simbolo_min
-		self.simbolo_max = simbolo_max
+		if (len (simbolo_max) == 0):
+			self.simbolo_max = simbolo_min
+		else:
+			self.simbolo_max = simbolo_max
 		self.estado_siguiente = estado_siguiente
 
 	def get_simbolo_min (self):
@@ -79,12 +141,15 @@ class Transicion:
 def Crear ():
 	os.system ("cls")
 	#Simbolo para crear el AFN Básico
-	simbolo = input ('\n\n\n¿Con qué simbolo deseas crear el AFN?\t')
+	simbolo = input ('\n\n¿Con qué simbolo deseas crear el AFN?\t')
 	#Se crea el AFN con el símbolo seleccionado por el usuario
 	Automata = AFN (simbolo)
-	print ('\n\n\nAutomata básico con símbolo \'' + simbolo + '\' creado correctamente.\n\n\n')
-	print ('Alfabeto: ', Automata.Alfabeto)
-	num_automata = int (input ('¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
+	print ('\n\nAutomata básico con símbolo \'' + simbolo + '\' creado correctamente.\n\n\n')
+	print ('\n\nAlfabeto: ', Automata.Alfabeto)
+	print ('\n\nEstados: ', Automata.get_estados ())
+	print ('\n\nEstado de inicial: ', Automata.get_estado_inicial ())
+	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
 	#Guardamos el automata creado en una de las 3 posiciones que se tienen
 	Automatas [num_automata] = Automata
 
@@ -92,9 +157,17 @@ def Unir ():
 	os.system ("cls")
 	automata1 = int (input ('\n\n\nSelecciona el autómata 1:\t')) - 1
 	automata2 = int (input ('\n\n\nSelecciona el autómata 2:\t')) - 1
+	Automata = AFN ()
 	#Cuando ya regrese el automata, descomentar la siguiente linea y eliminar la que sigue
-	#nuevo_AFN = (Automatas [automata1]).Unir_AFN ((Automatas [automata2]))
-	(Automatas [automata1]).Unir_AFN ((Automatas [automata2]))
+	Automata = (Automatas [automata1]).Unir_AFN ((Automatas [automata2]))
+	#(Automatas [automata1]).Unir_AFN ((Automatas [automata2]))
+	print ('\n\nAlfabeto: ', Automata.Alfabeto)
+	print ('\n\nEstados: ', Automata.get_estados ())
+	print ('\n\nEstado de inicial: ', Automata.get_estado_inicial ())
+	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
+	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	Automatas [num_automata] = Automata
 
 def Concatenar ():
 	os.system ("cls")
