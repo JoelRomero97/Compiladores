@@ -83,6 +83,18 @@ class AFN:
 			for t in AFN_2.Estado_Inicial.Transiciones:
 				#Al estado final del AFN_1 se le agregan las transiciones del estado inicial de AFN_2
 				e.AddTransition (t.estado_siguiente, t.simbolo_min, t.simbolo_max)
+		#Eliminamos el estado inicial del AFN_2
+		AFN_2.Estados.discard (AFN_2.Estado_Inicial)
+		#Eliminamos todos los estados de aceptación del AFN
+		for e in self.Estados_Aceptacion:
+			e.Estado_Aceptacion = False
+		self.Estados_Aceptacion = set ()
+		#Los nuevos estados de aceptación serán los estados de aceptación del AFN_2
+		self.Estados_Aceptacion = (self.Estados_Aceptacion).union (AFN_2.Estados_Aceptacion)
+		#El nuevo alfabeto será la unión de ambos alfabetos
+		self.Alfabeto = (self.Alfabeto).union (AFN_2.Alfabeto)
+		#El nuevo conjunto de estados será la union de los estados de ambos AFN
+		self.Estados = (self.Estados).union (AFN_2.Estados)
 		return self
 
 	def get_estados (self):
@@ -158,9 +170,8 @@ def Unir ():
 	automata1 = int (input ('\n\n\nSelecciona el autómata 1:\t')) - 1
 	automata2 = int (input ('\n\n\nSelecciona el autómata 2:\t')) - 1
 	Automata = AFN ()
-	#Cuando ya regrese el automata, descomentar la siguiente linea y eliminar la que sigue
+	#Se unen los AFN seleccionados y se guarda en otro AFN
 	Automata = (Automatas [automata1]).Unir_AFN ((Automatas [automata2]))
-	#(Automatas [automata1]).Unir_AFN ((Automatas [automata2]))
 	print ('\n\nAlfabeto: ', Automata.Alfabeto)
 	print ('\n\nEstados: ', Automata.get_estados ())
 	print ('\n\nEstado de inicial: ', Automata.get_estado_inicial ())
@@ -171,6 +182,18 @@ def Unir ():
 
 def Concatenar ():
 	os.system ("cls")
+	automata1 = int (input ('\n\n\nSelecciona el autómata 1:\t')) - 1
+	automata2 = int (input ('\n\n\nSelecciona el autómata 2:\t')) - 1
+	Automata = AFN ()
+	#Se concatenan los 2 AFN y se guarda en otro AFN
+	Automata = (Automatas [automata1]).Concatenar_AFN ((Automatas [automata2]))
+	print ('\n\nAlfabeto: ', Automata.Alfabeto)
+	print ('\n\nEstados: ', Automata.get_estados ())
+	print ('\n\nEstado de inicial: ', Automata.get_estado_inicial ())
+	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
+	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	Automatas [num_automata] = Automata
 
 def Positiva ():
 	os.system ("cls")
