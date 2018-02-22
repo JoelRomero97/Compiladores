@@ -149,6 +149,33 @@ class AFN:
 		self.Estado_Inicial = Nuevo_Inicio
 		return self
 
+	def Cerradura_Opcional (self):
+		#Se crea un nuevo estado inicial
+		Nuevo_Inicio = Estado ()
+		#Se crea un nuevo estado final
+		Nuevo_Fin = Estado ()
+		#Se agrega una transición del nuevo estado inicial al estado inicial del AFN
+		Nuevo_Inicio.AddTransition (self.Estado_Inicial, '')
+		#Se agrega una transición del nuevo estado inicial al nuevo estado final
+		Nuevo_Inicio.AddTransition (Nuevo_Fin, '')
+		#Agregar una transición con epsilon de todos los estados finales al nuevo estado final
+		for e in self.Estados_Aceptacion:
+			e.AddTransition (Nuevo_Fin, '')
+			e.Estado_Aceptacion = False
+		#Eliminar los estados de aceptación del AFN
+		self.Estados_Aceptacion = set ()
+		#Agregar el nuevo estado de inicio al conjunto de estados del nuevo AFN
+		self.Estados.add (Nuevo_Inicio)
+		#Agregar el nuevo estado final al conjunto de estados del nuevo AFN
+		self.Estados.add (Nuevo_Fin)
+		#Se asigna el estatus de estado de aceptación al nuevo estado final
+		Nuevo_Fin.Estado_Aceptacion = True
+		#Se agrega el nuevo estado final al conjunto de estados de aceptación
+		self.Estados_Aceptacion.add (Nuevo_Fin)
+		#Se actualiza el estado inicial del AFN
+		self.Estado_Inicial = Nuevo_Inicio
+		return self
+
 	def get_estados (self):
 		a = set ()
 		for e in self.Estados:
@@ -278,6 +305,17 @@ def Kleene ():
 
 def Opcional ():
 	os.system ("cls")
+	automata1 = int (input ('\n\n\nSelecciona el autómata sobre el que deseas aplicar la operación ?:\t')) - 1
+	Automata = AFN ()
+	#Se unen los AFN seleccionados y se guarda en otro AFN
+	Automata = (Automatas [automata1]).Cerradura_Opcional ()
+	print ('\n\nAlfabeto: ', Automata.Alfabeto)
+	print ('\n\nEstados: ', Automata.get_estados ())
+	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
+	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
+	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	Automatas [num_automata] = Automata
 
 def Validacion ():
 	os.system ("cls")
