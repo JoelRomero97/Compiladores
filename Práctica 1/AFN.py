@@ -131,9 +131,11 @@ class AFN:
 		Nuevo_Inicio.AddTransition (Nuevo_Fin, '')
 		#Se agrega una transición del nuevo estado inicial al estado inicial del AFN
 		Nuevo_Inicio.AddTransition (self.Estado_Inicial, '')
-		#Agregar una transición con epsilon de todos los estados finales al estado inicial del AFN
 		for e in self.Estados_Aceptacion:
+			#Agregar una transición con epsilon de todos los estados finales al estado inicial del AFN
 			e.AddTransition (self.Estado_Inicial, '')
+			#Agregar una transición con epsilon de todos los estados finales al nuevo estado final
+			e.AddTransition (Nuevo_Fin, '')
 			e.Estado_Aceptacion = False
 		#Eliminar los estados de aceptación del AFN
 		self.Estados_Aceptacion = set ()
