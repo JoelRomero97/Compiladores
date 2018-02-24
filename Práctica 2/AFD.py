@@ -257,6 +257,39 @@ class AFN:
 				return True
 		return False
 
+	def Union_Especial (self, automatas):
+		#Se crea un AFN vacío para guardar el resultado
+		Nuevo_Automata = AFN ()
+		#Se crea un nuevo estado inicial
+		Nuevo_Inicio = Estado ()
+		#Se crea un nuevo estado final
+		Nuevo_Fin = Estado ()
+		#Se agregan todos los estados al nuevo automata
+		for a in automatas:
+			Nuevo_Automata.Estados = (Nuevo_Automata.Estados).union (a.Estados)
+		#Se crea el alfabeto del nuevo automata con la union de alfabetos de los otros automatas
+		for a in automatas:
+			Nuevo_Automata.Alfabeto = (Nuevo_Automata.Alfabeto).union (a.Alfabeto)
+		#Se agrega una transición del nuevo estado inicial a los estados iniciales de los automatas
+		for a in automatas:
+			Nuevo_Inicio.AddTransition (a.Estado_Inicial, '')
+		#Agregar una transición con epsilon de todos los estados finales de los automatas al nuevo fin
+		for a in automatas:
+			for e in a.Estados_Aceptacion:
+				e.AddTransition (Nuevo_Fin, '')
+				e.Estado_Aceptacion = False
+		#Agregar el nuevo estado de inicio al conjunto de estados del nuevo AFN
+		(Nuevo_Automata.Estados).add (Nuevo_Inicio)
+		#Agregar el nuevo estado final al conjunto de estados del nuevo AFN
+		(Nuevo_Automata.Estados).add (Nuevo_Fin)
+		#Se asigna el nuevo estado inicial del AFN
+		Nuevo_Automata.Estado_Inicial = Nuevo_Inicio
+		#Se asigna el estatus de estado de aceptación al nuevo estado final
+		Nuevo_Fin.Estado_Aceptacion = True
+		#Se agrega el nuevo estado final al conjunto de estados de aceptación
+		(Nuevo_Automata.Estados_Aceptacion).add (Nuevo_Fin)
+		return Nuevo_Automata
+
 	def get_estados (self):
 		a = set ()
 		for e in self.Estados:
@@ -445,9 +478,29 @@ def Validacion ():
 			input ('\n\n\n\nPresiona cualquier tecla para continuar...')
 
 def Unir_Especial ():
-	num_automata = 1
+	i = 1
+	option = 1
+	Automatas_Unir = []
+	Automata = AFN ()
 	#Mientras el usuario siga seleccionando automatas, se van a unir
-	#while (num_automata < len (Automatas)):
+	while (option < 2):
+		os.system ("cls")
+		automata1 = int (input ('\n\n\nSelecciona el autómata ' + str (i) + ':\t')) - 1
+		i = i + 1
+		#Se agrega el automata seleccionado a la lista para realizar la union de todos
+		Automatas_Unir.append (Automatas [automata1])
+		option = int (input ('\n\n\nDeseas unir otro autómata?\n\n1. Si\t\t2. No\t'))
+	#Obtenemos el primer automata seleccionado
+	Automata = Automatas_Unir [0]
+	#Obtener automata de todas las uniones de automatas
+	Automata = Automata.Union_Especial (Automatas_Unir)
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
+	Automatas [num_automata] = Automata
+	print ('\n\nAlfabeto: ', Automata.Alfabeto)
+	print ('\n\nEstados: ', Automata.get_estados ())
+	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
+	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
 
 def Salir ():
 	for i in range (len (Automatas)):
@@ -478,7 +531,7 @@ def Menu ():
 
 #Lista de n elementos para guardar los automatas creados por el usuario
 Automatas = []
-for i in range (3):
+for i in range (6):
 	Automatas.append (i)
 
 Menu ()
