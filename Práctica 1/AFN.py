@@ -300,6 +300,14 @@ class Transicion:
 	def get_simbolo_max (self):
 		return self.simbolo_max
 
+def posiciones ():
+	pos = '('
+	for i in range (len (Automatas)):
+		pos = pos + str (i + 1) + ' / '
+	pos = pos.rstrip ('/ ')
+	pos = pos + ')'
+	return pos
+
 def Crear ():
 	os.system ("cls")
 	#Simbolo para crear el AFN Básico
@@ -311,8 +319,8 @@ def Crear ():
 	print ('\n\nEstados: ', Automata.get_estados ())
 	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
 	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
-	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
-	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata
 
 def Unir ():
@@ -326,8 +334,8 @@ def Unir ():
 	print ('\n\nEstados: ', Automata.get_estados ())
 	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
 	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
-	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
-	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata
 
 def Concatenar ():
@@ -341,8 +349,8 @@ def Concatenar ():
 	print ('\n\nEstados: ', Automata.get_estados ())
 	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
 	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
-	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
-	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata
 
 def Positiva ():
@@ -355,8 +363,8 @@ def Positiva ():
 	print ('\n\nEstados: ', Automata.get_estados ())
 	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
 	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
-	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
-	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata
 
 def Kleene ():
@@ -369,8 +377,8 @@ def Kleene ():
 	print ('\n\nEstados: ', Automata.get_estados ())
 	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
 	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
-	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
-	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata
 
 def Opcional ():
@@ -383,8 +391,8 @@ def Opcional ():
 	print ('\n\nEstados: ', Automata.get_estados ())
 	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
 	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
-	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata (1 / 2 / 3)?\t')) - 1
-	#Guardamos el automata creado en una de las 3 posiciones que se tienen
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata
 
 def Validacion ():
@@ -414,13 +422,14 @@ def Validacion ():
 def Salir ():
 	for i in range (len (Automatas)):
 		Automatas.pop ()
+	print ('\n\n\nAutomatas eliminados.\n\n\n')
 	sys.exit ()
 
 def Menu ():
 	#Diccionario para seleccionar la opcion que desee el usuario
 	funciones = {1:Crear, 2:Unir, 3:Concatenar, 4:Positiva, 5:Kleene, 6:Opcional, 7:Validacion, 8:Salir}
 	option = 1
-	while option < 8 and option > 0:
+	while option < 9 and option > 0:
 		os.system ("cls")
 		print ('\n\n')
 		print ('\t\tMENÚ\n\n')
@@ -436,7 +445,9 @@ def Menu ():
 		#Llamar a la función según la opción seleccionada
 		funciones [option] ()
 
-#Lista de 3 elementos para guardar los automatas creados por el usuario
-Automatas = ['a1', 'a2', 'a3']
+#Lista de n elementos para guardar los automatas creados por el usuario
+Automatas = []
+for i in range (3):
+	Automatas.append (i)
 
 Menu ()
