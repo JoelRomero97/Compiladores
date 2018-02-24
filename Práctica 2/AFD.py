@@ -479,28 +479,28 @@ def Validacion ():
 
 def Unir_Especial ():
 	i = 1
-	option = 1
+	automata1 = 1
 	Automatas_Unir = []
 	Automata = AFN ()
 	#Mientras el usuario siga seleccionando automatas, se van a unir
-	while (option < 2):
+	while (automata1 > -1):
 		os.system ("cls")
+		print ('\n\n\nSelecciona el automata \'0\' para dejar de unir automatas')
 		automata1 = int (input ('\n\n\nSelecciona el autómata ' + str (i) + ':\t')) - 1
+		if (automata1 == -1):
+			break
 		i = i + 1
 		#Se agrega el automata seleccionado a la lista para realizar la union de todos
 		Automatas_Unir.append (Automatas [automata1])
-		option = int (input ('\n\n\nDeseas unir otro autómata?\n\n1. Si\t\t2. No\t'))
-	#Obtenemos el primer automata seleccionado
-	Automata = Automatas_Unir [0]
 	#Obtener automata de todas las uniones de automatas
 	Automata = Automata.Union_Especial (Automatas_Unir)
-	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
-	#Guardamos el automata creado en una de las n posiciones que se tienen
-	Automatas [num_automata] = Automata
 	print ('\n\nAlfabeto: ', Automata.Alfabeto)
 	print ('\n\nEstados: ', Automata.get_estados ())
 	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
 	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
+	Automatas [num_automata] = Automata
 
 def Salir ():
 	for i in range (len (Automatas)):
