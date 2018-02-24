@@ -290,6 +290,9 @@ class AFN:
 		(Nuevo_Automata.Estados_Aceptacion).add (Nuevo_Fin)
 		return Nuevo_Automata
 
+	def AFN_To_AFD (self):
+		#ALGO
+
 	def get_estados (self):
 		a = set ()
 		for e in self.Estados:
@@ -502,6 +505,20 @@ def Unir_Especial ():
 	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata
 
+def Convertir_AFN ():
+	os.system ("cls")
+	automata1 = int (input ('\n\n\nSelecciona el autómata que deseas convertir a AFD:\t')) - 1
+	Automata = AFN ()
+	#Se convierte al automata AFN a un AFD
+	Automata = (Automatas [automata1]).AFN_To_AFD ()
+	print ('\n\nAlfabeto: ', Automata.Alfabeto)
+	print ('\n\nEstados: ', Automata.get_estados ())
+	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
+	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
+	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
+	#Guardamos el automata creado en una de las n posiciones que se tienen
+	Automatas [num_automata] = Automata
+
 def Salir ():
 	for i in range (len (Automatas)):
 		Automatas.pop ()
@@ -510,9 +527,10 @@ def Salir ():
 
 def Menu ():
 	#Diccionario para seleccionar la opcion que desee el usuario
-	funciones = {1:Crear, 2:Unir, 3:Concatenar, 4:Positiva, 5:Kleene, 6:Opcional, 7:Validacion, 8:Unir_Especial, 9:Salir}
+	funciones = {1:Crear, 2:Unir, 3:Concatenar, 4:Positiva, 5:Kleene,
+				 6:Opcional, 7:Validacion, 8:Unir_Especial, 9: Convertir_AFN, 10:Salir}
 	option = 1
-	while option < 10 and option > 0:
+	while option < 11 and option > 0:
 		os.system ("cls")
 		print ('\n\n')
 		print ('\t\tMENÚ\n\n')
@@ -524,7 +542,8 @@ def Menu ():
 		print ('6. Operación ?')
 		print ('7. Validar cadena')
 		print ('8. Unión especial')
-		print ('9. Salir\n\n\n')
+		print ('9. Convertir a AFD')
+		print ('10. Salir\n\n\n')
 		option = int (input ('Selecciona una opción:\t'))
 		#Llamar a la función según la opción seleccionada
 		funciones [option] ()
