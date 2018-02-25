@@ -11,6 +11,25 @@ class AFD:
 		self.Estados = set ()
 		#El conjunto de estados de aceptación se inicializa como un conjunto vacío
 		self.Estados_Aceptacion = set ()
+		#La tabla de transiciones se crea como una lista vacía
+		self.Tabla = []
+
+	def get_estados (self):
+		a = set ()
+		for e in self.Estados:
+			a.add (e.id_estado)
+		return a
+
+	def get_estado_inicial (self):
+		a = set ()
+		a.add ((self.Estado_Inicial).id_estado)
+		return a
+
+	def get_edos_aceptacion (self):
+		a = set ()
+		for e in self.Estados_Aceptacion:
+			a.add (e.id_estado)
+		return a
 
 class AFN:
 	def __init__ (self, simbolo = ''):
@@ -257,7 +276,7 @@ class AFN:
 				return True
 		return False
 
-	def Union_Especial (self, automatas):
+	"""def Union_Especial (self, automatas):
 		#Se crea un AFN vacío para guardar el resultado
 		Nuevo_Automata = AFN ()
 		#Se crea un nuevo estado inicial
@@ -288,10 +307,117 @@ class AFN:
 		Nuevo_Fin.Estado_Aceptacion = True
 		#Se agrega el nuevo estado final al conjunto de estados de aceptación
 		(Nuevo_Automata.Estados_Aceptacion).add (Nuevo_Fin)
-		return Nuevo_Automata
+		return Nuevo_Automata			#Se crea nuevo estado final"""
+
+	def Union_Especial (self, automatas):
+		#Se crea un AFN vacío para guardar el resultado
+		Nuevo_Automata = AFN ()
+		#Se crea un nuevo estado inicial
+		Nuevo_Inicio = Estado ()
+		#Se agregan todos los estados al nuevo automata
+		for a in automatas:
+			Nuevo_Automata.Estados = (Nuevo_Automata.Estados).union (a.Estados)
+		#Se crea el alfabeto del nuevo automata con la union de alfabetos de los otros automatas
+		for a in automatas:
+			Nuevo_Automata.Alfabeto = (Nuevo_Automata.Alfabeto).union (a.Alfabeto)
+		#Se agrega una transición del nuevo estado inicial a los estados iniciales de los automatas
+		for a in automatas:
+			Nuevo_Inicio.AddTransition (a.Estado_Inicial, '')
+		#Agregar el nuevo estado de inicio al conjunto de estados del nuevo AFN
+		(Nuevo_Automata.Estados).add (Nuevo_Inicio)
+		#Se asigna el nuevo estado inicial del AFN
+		Nuevo_Automata.Estado_Inicial = Nuevo_Inicio
+		for a in automatas:
+			for e in a.Estados_Aceptacion:
+				#Se agregan los estados de aceptación al conjunto de estado de aceptación de los AFN
+				(Nuevo_Automata.Estados_Aceptacion).add (e)
+		return Nuevo_Automata			#No se crea nuevo estado final
 
 	def AFN_To_AFD (self):
-		#ALGO
+		"""automata = AFD ()
+		#Tabla de transiciones para el AFD
+		tabla_afd = []
+		#Variable bool para saber si ya existe el estado
+		existe = False
+		#Variable bool para saber si ya el conjunto de estados es vacio
+		empty = False
+		#Asignar el mismo alfabeto del AFN al AFD
+		automata.Alfabeto = self.Alfabeto
+		#Obtenemos el tamaño del alfabeto
+		num_columnas = (len (self.Alfabeto) + 1)
+		#Se crea un conjunto de estados si vacío
+		estados_si = set ()
+		#Calculamos la cerradura epsilon del estado inicial del AFN
+		conjunto_aux = self.Cerradura_Epsilon (self.Estado_Inicial)
+		#Se agrega el conjunto de estados obtenido S0
+		estados_si.add (Estados_Si (conjunto_aux))
+		#Recorremos el conjunto de estados si
+		for e in estados_si:
+			i = 0
+			fila = [-1] * num_columnas
+			for simbolo in self.Alfabeto:
+				#Obtenemos un conjunto de estados con la operación Ir A
+				conjunto_aux = self.Ir_A (e.Estados, simbolo)
+				#Verificamos que no sea un conjunto vacío
+				if (len (conjunto_aux) == 0):
+					i = i + 1
+					continue
+				#Verificamos si el conjunto obtenido ya existe
+				for e1 in estados_si:
+					if (conjunto_aux == e1.Estados):
+						existe = True
+						fila [i] = e1.id_estado
+						break
+				#Si el conjunto auxiliar no existe y no está vacío
+				if (not existe):
+					estados_si.add (Estados_Si (conjunto_aux))
+				i = i + 1
+			tabla_afd.append (fila)
+		automata.Tabla = tabla_afd
+		return automata"""
+		automata = AFD ()
+		#Tabla de transiciones para el AFD
+		tabla_afd = []
+		#Variable bool para saber si ya existe el estado
+		existe = False
+		#Variable bool para saber si ya el conjunto de estados es vacio
+		empty = False
+		#Asignar el mismo alfabeto del AFN al AFD
+		automata.Alfabeto = self.Alfabeto
+		#Obtenemos el tamaño del alfabeto
+		num_columnas = (len (self.Alfabeto) + 1)
+		#Se crea un conjunto de estados si vacío
+		estados_si = []
+		#Calculamos la cerradura epsilon del estado inicial del AFN
+		conjunto_aux = self.Cerradura_Epsilon (self.Estado_Inicial)
+		#Se agrega el conjunto de estados obtenido S0
+		estados_si.append (Estados_Si (conjunto_aux))
+		#Recorremos el conjunto de estados si
+		longitud = len (estados_si)
+		for e in range (longitud):
+			i = 0
+			fila = [-1] * num_columnas
+			for simbolo in self.Alfabeto:
+				#Obtenemos un conjunto de estados con la operación Ir A
+				conjunto_aux = self.Ir_A ((estados_si [e]).Estados, simbolo)
+				#Verificamos que no sea un conjunto vacío
+				if (len (conjunto_aux) == 0):
+					i = i + 1
+					continue
+				#Verificamos si el conjunto obtenido ya existe
+				for e1 in range (longitud):
+					if (conjunto_aux == (estados_si [e1]).Estados):
+						existe = True
+						fila [i] = (estados_si [e1]).id_estado
+						break
+				#Si el conjunto auxiliar no existe y no está vacío
+				if (not existe):
+					estados_si.append (Estados_Si (conjunto_aux))
+				i = i + 1
+				longitud = len (estados_si)
+			tabla_afd.append (fila)
+		automata.Tabla = tabla_afd
+		return automata
 
 	def get_estados (self):
 		a = set ()
@@ -301,7 +427,7 @@ class AFN:
 
 	def get_estado_inicial (self):
 		a = set ()
-		a.add (self.Estado_Inicial.id_estado)
+		a.add ((self.Estado_Inicial).id_estado)
 		return a
 
 	def get_edos_aceptacion (self):
@@ -343,7 +469,7 @@ class Estados_Si:
 		Estados_Si.id_global_si = Estados_Si.id_global_si + 1
 		#Valor booleano para saber si ya fue analizado ese conjunto
 		self.Analizado = False
-		#El conjunto de transiciones se inicializa como un conjunto vacío
+		#El conjunto de estados se inicializa con el conjunto mandado como parametro
 		self.Estados = Estados
 
 class Transicion:
@@ -508,13 +634,14 @@ def Unir_Especial ():
 def Convertir_AFN ():
 	os.system ("cls")
 	automata1 = int (input ('\n\n\nSelecciona el autómata que deseas convertir a AFD:\t')) - 1
-	Automata = AFN ()
+	Automata = AFD ()
 	#Se convierte al automata AFN a un AFD
 	Automata = (Automatas [automata1]).AFN_To_AFD ()
 	print ('\n\nAlfabeto: ', Automata.Alfabeto)
-	print ('\n\nEstados: ', Automata.get_estados ())
-	print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
-	print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
+	print ('\n\nTabla de transiciones\n\n', Automata.Tabla)
+	#print ('\n\nEstados: ', Automata.get_estados ())
+	#print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
+	#print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
 	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
 	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata
