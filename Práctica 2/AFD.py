@@ -375,13 +375,13 @@ class AFN:
 			tabla_afd.append (fila)
 		automata.Tabla = tabla_afd
 		return automata"""
+
+
 		automata = AFD ()
 		#Tabla de transiciones para el AFD
 		tabla_afd = []
 		#Variable bool para saber si ya existe el estado
 		existe = False
-		#Variable bool para saber si ya el conjunto de estados es vacio
-		empty = False
 		#Asignar el mismo alfabeto del AFN al AFD
 		automata.Alfabeto = self.Alfabeto
 		#Obtenemos el tamaño del alfabeto
@@ -639,7 +639,7 @@ def Convertir_AFN ():
 	Automata = (Automatas [automata1]).AFN_To_AFD ()
 	print ('\n\nAlfabeto: ', Automata.Alfabeto)
 	print ('\n\nTabla de transiciones\n\n', Automata.Tabla)
-	#print ('\n\nEstados: ', Automata.get_estados ())
+	print ('\n\nEstados: ', Automata.get_estados ())
 	#print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
 	#print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
 	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
