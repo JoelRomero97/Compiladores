@@ -9,3 +9,9 @@ class Estados_Si:
 		Estados_Si.id_global_si = Estados_Si.id_global_si + 1
 		#El conjunto de estados se inicializa con el conjunto mandado como parametro
 		self.Estados = Estados
+
+	def get_estados (self):
+		a = set ()
+		for e in self.Estados:
+			a.add (e.id_estado)
+		return a

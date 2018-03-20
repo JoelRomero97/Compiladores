@@ -286,49 +286,46 @@ class AFN:
 		Si = self.Cerradura_Epsilon (self.Estado_Inicial)
 		#Se agrega el conjunto de estados obtenido S0
 		estados_si.append (Estados_Si (Si))
+		
 		#Agregamos la primera fila de la tabla
 		fila = [-1] * num_columnas
 		for c in automata.Alfabeto:
 			fila [(list(automata.Alfabeto)).index (c)] = c
 		fila [num_columnas - 1] = '¿Acept?'
 		(automata.Tabla).append (fila)
-		#Recorremos el conjunto de estados si
-		j = 0
-		while (j < len (estados_si)):
-			i = 0
+
+		#Transiciones de la tabla
+		for Si in estados_si:
+			print ('Conjunto S' + str (estados_si.index (Si)) + ':', Si.get_estados ())
+			#Fila que se agregará a la tabla de transiciones
 			fila = [-1] * num_columnas
+			#Se recorre todo el alfabeto del automata
 			for simbolo in automata.Alfabeto:
-				#Obtenemos un conjunto de estados con la operación Ir A
-				Si = self.Ir_A ((estados_si [j]).Estados, simbolo)
-				#Verificamos que no sea un conjunto vacío
-				if (len (Si) == 0):
-					i = i + 1
-					continue
-				#Variable bool para saber si ya existe el estado
-				existe = False
-				#Verificamos si el conjunto obtenido ya existe
-				k = 0
-				while (k < len (estados_si)):
-					if (Si == (estados_si [k]).Estados):
-						existe = True
-						fila [i] = (estados_si [k]).id_estado
+				#Conjunto de estados auxiliar con la operación Ir A
+				aux = self.Ir_A (Si.Estados, simbolo)
+				#Tokens de la tabla
+				for estado in Si.Estados:
+					if (estado.Estado_Aceptacion):
+						fila [len (automata.Alfabeto)] = estado.Token
 						break
-					k = k + 1
-				#Si el conjunto auxiliar no existe y no está vacío
-				if (not existe):
-					estados_si.append (Estados_Si (Si))
-					k = len (estados_si) - 1
-					fila [i] = (estados_si [k]).id_estado
-				i = i + 1
+				#Se verifica que el conjunto obtenido no sea vacío
+				if (len (aux) == 0):
+					continue
+				else:
+					#Verificamos si el conjunto obtenido ya existe
+					existe = False
+					for x in estados_si:
+						#Si ya existe el conjunto de estados
+						if (aux == x.Estados):
+							existe = True
+							fila [(list (automata.Alfabeto)).index (simbolo)] = x.id_estado
+							break
+					#Si el conjunto de estados no existe
+					if (not existe):
+						aux2 = Estados_Si (aux)
+						estados_si.append (aux2)
+						fila [(list (automata.Alfabeto)).index (simbolo)] = aux2.id_estado
 			(automata.Tabla).append (fila)
-			j = j + 1
-		row = 0
-		last = num_columnas - 1
-		for s in estados_si:
-			for e in s.Estados:
-				if (e.Estado_Aceptacion):
-					automata.Tabla [row][last] = e.Token
-			row = row + 1
 		return automata
 
 	def get_estados (self):
