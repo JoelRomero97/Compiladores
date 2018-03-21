@@ -156,9 +156,6 @@ def Convertir_AFN ():
 	print ('\n\nAlfabeto: ', Automata.Alfabeto)
 	print ('\n\nTabla de transiciones:\n\n')
 	Automata.get_tabla ()
-	#print ('\n\nEstados: ', Automata.get_estados ())
-	#print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
-	#print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
 	num_automata = int (input ('\n\n¿En qué posición deseas guardar el autómata ' + posiciones () + ' ?\t')) - 1
 	#Guardamos el automata creado en una de las n posiciones que se tienen
 	Automatas [num_automata] = Automata

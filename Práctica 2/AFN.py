@@ -325,7 +325,6 @@ class AFN:
 						estados_si.append (aux2)
 						fila [(list (automata.Alfabeto)).index (simbolo)] = aux2.id_estado
 			(automata.Tabla).append (fila)
-		automata.construir_AFD ()
 		return automata
 
 	def get_estados (self):

@@ -1,13 +1,7 @@
 class AFD:
 	def __init__ (self):
-		#Inicialización del estado inicial a 'null'
-		self.Estado_Inicial = None
 		#El conjunto del alfabeto se inicializa como un conjunto vacío
 		self.Alfabeto = set ()
-		#El conjunto de estados se inicializa como un conjunto vacío
-		self.Estados = set ()
-		#El conjunto de estados de aceptación se inicializa como un conjunto vacío
-		self.Estados_Aceptacion = set ()
 		#La tabla de transiciones se crea como una lista vacía
 		self.Tabla = []
 
