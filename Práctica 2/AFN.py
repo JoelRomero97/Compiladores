@@ -296,7 +296,6 @@ class AFN:
 
 		#Transiciones de la tabla
 		for Si in estados_si:
-			print ('Conjunto S' + str (estados_si.index (Si)) + ':', Si.get_estados ())
 			#Fila que se agregará a la tabla de transiciones
 			fila = [-1] * num_columnas
 			#Se recorre todo el alfabeto del automata
@@ -326,6 +325,7 @@ class AFN:
 						estados_si.append (aux2)
 						fila [(list (automata.Alfabeto)).index (simbolo)] = aux2.id_estado
 			(automata.Tabla).append (fila)
+		automata.construir_AFD ()
 		return automata
 
 	def get_estados (self):
