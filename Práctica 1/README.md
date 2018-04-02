@@ -1,4 +1,4 @@
-# AFN
+# Autómata Finito No Determinista
 
 Creación por el método de thompson un Autómata Finito No Determinista por medio de un menú para el usuario que cuenta con las operaciones:
 - Crear AFN básico: Crea un AFN con un símbolo o un rango de símbolos. (a, a-z, 0-1, 3, etc)
