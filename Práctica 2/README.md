@@ -1,4 +1,4 @@
-# AFD
+# Autómata Finito Determinista
 
 Se agrega opción para realizar la conversión de Autómata Finito NO Determinista a un Autómata Finito Determinista en el menú de la práctica 1 por medio de subconjuntos, mostrando la tabla de transiciones del autómata finito determinista.
 
