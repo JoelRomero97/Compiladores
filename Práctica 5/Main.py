@@ -19,7 +19,7 @@ class Interfaz:
 		#Boton para mandar a ventana de unir autómatas
 		self.boton_union_especial = None
 		#Boton para mandar a ventana de convertir AFN a AFD
-		self.boton_convertir_AFD = None
+		self.boton_convertir_AFN = None
 		#Boton para mandar a ventana de validar cadena léxicamente
 		self.boton_lexico = None
 		#Textbox para ingresar expresión regular
@@ -46,8 +46,16 @@ class Interfaz:
 		self.boton_crear_AFN_2 = None
 		#Boton para convertir a posfijo la expresión ingresada
 		self.boton_validar_cadena_2 = None
-		#Boton para convertir a posfijo la expresión ingresada
+		#Boton para unir los N autómatas
 		self.boton_union_especial_2 = None
+		#Boton para unir otro autómata
+		self.boton_si = None
+		#Boton para dejar de unir autómatas
+		self.boton_no = None
+		#Lista para guardar las posiciones a unir de los AFN
+		self.posiciones_unir = []
+		#Boton para convertir otro AFN
+		self.boton_convertir_otro_AFN = None
 
 	def mostrar_menu_principal (self):
 		color_azul = '#214E77'
@@ -64,14 +72,14 @@ class Interfaz:
 								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.validar_cadena)
 		self.boton_union_especial = Button (self.ventana, text = 'Unir Autómatas', font = fuente_botones,
 								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.union_especial)
-		self.boton_convertir_AFD = Button (self.ventana, text = 'Convertir a AFD', font = fuente_botones,
-								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.convertir_AFD)
+		self.boton_convertir_AFN = Button (self.ventana, text = 'Convertir a AFD', font = fuente_botones,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.convertir_AFN)
 		self.boton_lexico = Button (self.ventana, text = 'Análisis Léxico', font = fuente_botones,
 								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.analisis_lexico)
 		self.boton_crear_AFN.place (x = posicion_x, y = posicion_y)
 		self.boton_validar_cadena.place (x = posicion_x, y = posicion_y + 50)
 		self.boton_union_especial.place (x = posicion_x, y = posicion_y + 100)
-		self.boton_convertir_AFD.place (x = posicion_x, y = posicion_y + 150)
+		self.boton_convertir_AFN.place (x = posicion_x, y = posicion_y + 150)
 		self.boton_lexico.place (x = posicion_x, y = posicion_y + 200)
 
 	def ocultar_menu_principal (self):
@@ -79,7 +87,7 @@ class Interfaz:
 		self.boton_union_especial.place_forget ()
 		self.boton_validar_cadena.place_forget ()
 		self.boton_crear_AFN.place_forget ()
-		self.boton_convertir_AFD.place_forget ()
+		self.boton_convertir_AFN.place_forget ()
 		self.boton_lexico.place_forget ()
 
 	def crear_AFN (self):
@@ -157,8 +165,7 @@ class Interfaz:
 		color_gris2 = '#686B6D'
 		posicion_y = 115
 		posicion_x = 220
-		self.label_cadena = Label (self.ventana, text = 'Cadena:', font = fuente_label, fg = color_gris2,
-									bg = 'white')
+		self.label_cadena = Label (self.ventana, text = 'Cadena:', font = fuente_label, fg = color_gris2, bg = 'white')
 		self.label_cadena.place (x = posicion_x - 106, y = posicion_y - 4)
 		self.entrada_cadena = Entry (self.ventana, bg = color_gris, bd = 0, font = fuente_entrada, cursor = 'ibeam')
 		self.entrada_cadena.place (x = posicion_x, y = posicion_y)
@@ -222,61 +229,147 @@ class Interfaz:
 	def union_especial (self):
 		self.ocultar_menu_principal ()
 		fuente_entrada = font.Font (family = 'Microsoft YaHei UI Light', size = 14)
+		fuente_entrada2 = font.Font (family = 'Microsoft YaHei UI Light', size = 12)
 		fuente_label = font.Font (family = 'Microsoft YaHei UI Light', size = 16, weight = 'bold')
 		fuente_boton = font.Font (family = 'Microsoft YaHei UI Light', size = 12)
 		color_azul = '#214E77'
 		color_gris = '#CDD0D2'
 		color_gris2 = '#686B6D'
-		posicion_y = 120
+		posicion_y = 115
 		posicion_x = 220
-		self.entrada_expresion = Entry (self.ventana, bg = color_gris, bd = 0, font = fuente_entrada, cursor = 'ibeam')
-		self.entrada_expresion.place (x = posicion_x, y = posicion_y)
-		self.label_expresion = Label (self.ventana, text = 'Expresión:', font = fuente_label, fg = color_gris2,
+		self.label_automata = Label (self.ventana, text = 'Autómata:', font = fuente_label, fg = color_gris2,
 									bg = 'white')
-		self.label_expresion.place (x = posicion_x - 140, y = posicion_y - 5)
-		self.boton_union_especial_2 = Button (self.ventana, text = 'Convertir a prefijo', font = fuente_boton,
-								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.prefijo)
-		self.boton_union_especial_2.place (x = posicion_x - 25, y = posicion_y + 50)
+		self.label_automata.place (x = posicion_x - 130, y = posicion_y)
+		self.combo_posicion = ttk.Combobox (self.ventana, state = 'readonly', font = fuente_entrada2, width = 22)
+		self.combo_posicion ['values'] = Posiciones
+		self.combo_posicion.place (x = posicion_x, y = posicion_y + 6)
+		self.boton_union_especial_2 = Button (self.ventana, text = 'Unir autómata', font = fuente_boton,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.union_especial_2)
+		self.boton_union_especial_2.place (x = posicion_x - 30, y = posicion_y + 55)
 
-	def prefijo (self):
-		self.entrada_expresion.place_forget ()
-		self.label_expresion.place_forget ()
+	def union_especial_2 (self):
+		self.label_automata.place_forget ()
+		self.combo_posicion.place_forget ()
 		self.boton_union_especial_2.place_forget ()
-		expresion = self.entrada_expresion.get ()
-		print ('Expresion ingresada: ' + expresion)
-		label_correcto = expresion
+		(self.posiciones_unir).append (self.combo_posicion.current ())
+		unir_otro = '¿Deseas unir otro AFN?'
+		color_azul = '#214E77'
+		color_gris = '#686B6D'
+		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
+		fuente_correcto = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
+		self.label_correcto = Label (self.ventana, text = unir_otro, font = fuente_correcto, fg = color_gris,
+								bg = 'white')
+		self.label_correcto.place (relx = 0.15, rely = 0.2)
+		self.boton_si = Button (self.ventana, text = 'Si', font = fuente_botones,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.union_especial_3)
+		self.boton_si.place (relx = 0.45, rely = 0.35)
+		self.boton_no = Button (self.ventana, text = 'No', font = fuente_botones,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.union_especial_4)
+		self.boton_no.place (relx = 0.44, rely = 0.45)
+
+	def union_especial_3 (self):
+		self.label_correcto.place_forget ()
+		self.boton_si.place_forget ()
+		self.boton_no.place_forget ()
+		self.union_especial ()
+
+	def union_especial_4 (self):
+		self.label_correcto.place_forget ()
+		self.boton_si.place_forget ()
+		self.boton_no.place_forget ()
+		correcto = 'AFN unido correctamente'
+		color_azul = '#214E77'
+		color_gris = '#686B6D'
+		posicion_y = 115
+		posicion_x = 220
+		fuente_entrada2 = font.Font (family = 'Microsoft YaHei UI Light', size = 12)
+		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
+		fuente_label = font.Font (family = 'Microsoft YaHei UI Light', size = 16, weight = 'bold')
+		fuente_correcto = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
+		self.label_correcto = Label (self.ventana, text = correcto, font = fuente_correcto, fg = color_gris,
+								bg = 'white')
+		self.label_correcto.place (relx = 0.14, rely = 0.15)
+		self.label_posicion = Label (self.ventana, text = 'Posición:', font = fuente_label, fg = color_gris, bg = 'white')
+		self.label_posicion.place (x = posicion_x - 110, y = posicion_y + 62)
+		self.combo_posicion = ttk.Combobox (self.ventana, state = 'readonly', font = fuente_entrada2, width = 22)
+		self.combo_posicion ['values'] = Posiciones
+		self.combo_posicion.place (x = posicion_x, y = posicion_y + 68)
+		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command=self.regresar_menu_principal_3)
+		self.boton_menu_principal.place (relx = 0.27, rely = 0.45)
+
+	def regresar_menu_principal_3 (self):
+		self.label_correcto.place_forget ()
+		self.label_posicion.place_forget ()
+		self.combo_posicion.place_forget ()
+		self.boton_menu_principal.place_forget ()
+		posicion = self.combo_posicion.current ()
 		"""
-		label_correcto = convertir_prefijo (expresion)
-		En la variable 'expresion' ya está guardada la expresión a convertir a prefijo en un string.
-		En resultado se almacena la expresión convertida en prefijo.
-		BORRAR LÍNEA 212 Y DEJAR LÍNEA 214
+		AQUI SE DEBEN UNIR LOS AUTÓMATAS 
+		POSICIONES GUARDADAS EN: self.posiciones_unir
+		"""
+		self.mostrar_menu_principal ()
+
+	def convertir_AFN (self):
+		self.ocultar_menu_principal ()
+		fuente_entrada = font.Font (family = 'Microsoft YaHei UI Light', size = 14)
+		fuente_entrada2 = font.Font (family = 'Microsoft YaHei UI Light', size = 12)
+		fuente_label = font.Font (family = 'Microsoft YaHei UI Light', size = 16, weight = 'bold')
+		fuente_boton = font.Font (family = 'Microsoft YaHei UI Light', size = 12)
+		color_azul = '#214E77'
+		color_gris = '#CDD0D2'
+		color_gris2 = '#686B6D'
+		posicion_y = 115
+		posicion_x = 220
+		self.label_posicion = Label (self.ventana, text = 'Posición:', font = fuente_label, fg = color_gris2, bg = 'white')
+		self.label_posicion.place (x = posicion_x - 110, y = posicion_y - 4)
+		self.combo_posicion = ttk.Combobox (self.ventana, state = 'readonly', font = fuente_entrada2, width = 22)
+		self.combo_posicion ['values'] = Posiciones
+		self.combo_posicion.place (x = posicion_x, y = posicion_y + 2)
+		self.boton_convertir_AFN_2 = Button (self.ventana, text = 'Convertir AFN a AFD', font = fuente_boton,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.convertir_AFN_2)
+		self.boton_convertir_AFN_2.place (x = posicion_x - 50, y = posicion_y + 50)
+
+	def convertir_AFN_2 (self):
+		self.label_posicion.place_forget ()
+		self.combo_posicion.place_forget ()
+		self.boton_convertir_AFN_2.place_forget ()
+		posicion = self.combo_posicion.current ()
+		correcto = 'AFN convertido correctamente'
+		"""
+		AQUI SE TENE QUE CONVERTIR EL AFN EN AFD
 		"""
 		color_azul = '#214E77'
 		color_gris = '#686B6D'
 		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
 		fuente_correcto = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
-		self.label_resultado = Label (self.ventana, text = 'Prefijo:', font = fuente_correcto, fg = color_gris,
-								bg = 'white')
-		self.label_resultado.place (relx = 0.15, rely = 0.2)
-		self.label_correcto = Label (self.ventana, text = str (label_correcto), font = fuente_correcto, fg = color_gris,
-								bg = 'white')
-		self.label_correcto.place (relx = 0.38, rely = 0.2)
+		posicion_y = 120
+		posicion_x = 60
+		self.label_correcto = Label (self.ventana, text = correcto, font = fuente_correcto, fg = color_gris, bg = 'white')
+		self.label_correcto.place (x = posicion_x - 30, y = posicion_y)
 		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
-								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.regresar_menu_principal)
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command=self.regresar_menu_principal_4)
 		self.boton_menu_principal.place (relx = 0.25, rely = 0.35)
-		self.boton_otro_AFN = Button (self.ventana, text = 'Ingresar otra expresión', font = fuente_botones,
-								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.ingresar_otra_prefijo)
-		self.boton_otro_AFN.place (relx = 0.27, rely = 0.45)
+		self.boton_convertir_otro_AFN = Button (self.ventana, text = 'Convertir otro autómata', font = fuente_botones,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.convertir_otro_AFN)
+		self.boton_convertir_otro_AFN.place (relx = 0.28, rely = 0.45)
 
-	def ingresar_otra_prefijo (self):
-		self.label_resultado.place_forget ()
+	def regresar_menu_principal_4 (self):
 		self.label_correcto.place_forget ()
 		self.boton_menu_principal.place_forget ()
-		self.boton_otro_AFN.place_forget ()
-		self.union_especial ()
+		self.boton_convertir_otro_AFN.place_forget ()
+		posicion = self.combo_posicion.current ()
+		"""
+		AQUI SE DEBEN UNIR LOS AUTÓMATAS 
+		POSICIONES GUARDADAS EN: self.posiciones_unir
+		"""
+		self.mostrar_menu_principal ()
 
-	def convertir_AFD (self):
-		self.ocultar_menu_principal ()
+	def convertir_otro_AFN (self):
+		self.label_correcto.place_forget ()
+		self.boton_menu_principal.place_forget ()
+		self.boton_convertir_otro_AFN.place_forget ()
+		self.convertir_AFN ()
 
 	def analisis_lexico (self):
 		self.ocultar_menu_principal ()
@@ -285,7 +378,7 @@ os.system ("cls")
 global Automatas
 Automatas = []
 Posiciones = []
-for i in range (8):
+for i in range (5):
 	Automatas.append (i)
 	Posiciones.append (i + 1)
 ventana_principal = Tk ()											#Declara una ventana
