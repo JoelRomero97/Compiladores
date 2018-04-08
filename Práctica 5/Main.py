@@ -134,19 +134,21 @@ class Interfaz:
 		Automata = AFN ()
 		Lexico = Lexema (expresion)
 		expresion_regular = Expresion_Regular (Lexico)
-		if (expresion_regular.E (Automata)):
-			correcto = 'AFN creado correctamente'
-		else:
-			correcto = 'Error al crear el AFN :('
-		Automatas [posicion] = Automata
 		color_azul = '#214E77'
 		color_gris = '#686B6D'
 		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
 		fuente_correcto = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
 		posicion_y = 120
 		posicion_x = 60
-		self.label_correcto = Label (self.ventana, text = correcto, font = fuente_correcto, fg = color_gris, bg = 'white')
-		self.label_correcto.place (x = posicion_x, y = posicion_y)
+		if (expresion_regular.E (Automata)):
+			correcto = 'AFN creado correctamente'
+			self.label_correcto = Label (self.ventana, text = correcto, font = fuente_correcto, fg = color_gris, bg = 'white')
+			self.label_correcto.place (x = posicion_x, y = posicion_y)
+		else:
+			correcto = 'Error al crear el AFN :('
+			self.label_correcto = Label (self.ventana, text = correcto, font = fuente_correcto, fg = color_gris, bg = 'white')
+			self.label_correcto.place (x = posicion_x + 30, y = posicion_y)
+		Automatas [posicion] = Automata
 		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
 								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.regresar_menu_principal)
 		self.boton_menu_principal.place (relx = 0.25, rely = 0.35)

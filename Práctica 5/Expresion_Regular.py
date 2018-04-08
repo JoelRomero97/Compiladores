@@ -72,7 +72,7 @@ class Expresion_Regular:
 					return True
 			return False
 		elif (token == Tokens.SIMB):
-			f = f.Crear_AFN(self.Lexic.lexema [0])
+			f = f.Crear_AFN (self.Lexic.lexema [0])
 			return True
 		elif (token == Tokens.CORI):
 			token = self.Lexic.get_token ()
@@ -86,7 +86,7 @@ class Expresion_Regular:
 						token = self.Lexic.get_token ()
 						if (token == Tokens.CORD):
 							if (simb2 > simb1):
-								f = f.Crear_AFN(simb1 + '-' + simb2)
+								f = f.Crear_AFN (simb1 + '-' + simb2)
 								return True
 				return False
 		elif (token == Tokens.DIAG):
@@ -94,8 +94,7 @@ class Expresion_Regular:
 			simbolos = {10:'|', 20:'&', 30:'+', 40:'*', 50:'?', 60:'(', 70:')', 80:'[', 90:'-', 100:']', 110:'\\'}
 			for i in range (10, 120, 10):
 				if (token == i):
-					f = f.Crear_AFN(simbolos [i])
-					break
-			self.Lexic.token = 120
+					f = f.Crear_AFN (simbolos [i])
+					return True
 			return True
 		return False
