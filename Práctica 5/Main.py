@@ -30,24 +30,26 @@ class Interfaz:
 		self.label_posicion = None
 		#Combobox para mostrar las posiciones donde guardar el autómata
 		self.combo_posicion = None
-		#Label que muestra 'Resultado:'
-		self.label_resultado = None
 		#Label que muestra el mensaje de correcto
 		self.label_correcto = None
 		#Label que muestra 'Cadena:'
 		self.label_cadena = None
+		#Label que muestra la secuencia de tokens
+		self.label_tokens = None
 		#Boton para regresar al menu principal
 		self.boton_menu_principal = None
 		#Boton para crear otro AFN
 		self.boton_otro_AFN = None
 		#Boton para validar otra cadena
 		self.boton_otra_cadena = None
-		#Boton para resolver la expresión ingresada
+		#Boton para crear el AFN
 		self.boton_crear_AFN_2 = None
-		#Boton para convertir a posfijo la expresión ingresada
+		#Boton para validar cadena
 		self.boton_validar_cadena_2 = None
-		#Boton para unir los N autómatas
+		#Boton para unir el autómata
 		self.boton_union_especial_2 = None
+		#Boton para analizar léxicamente una cadena
+		self.boton_analisis_lexico_2 = None
 		#Boton para unir otro autómata
 		self.boton_si = None
 		#Boton para dejar de unir autómatas
@@ -373,6 +375,79 @@ class Interfaz:
 
 	def analisis_lexico (self):
 		self.ocultar_menu_principal ()
+		fuente_entrada = font.Font (family = 'Microsoft YaHei UI Light', size = 14)
+		fuente_entrada2 = font.Font (family = 'Microsoft YaHei UI Light', size = 12)
+		fuente_label = font.Font (family = 'Microsoft YaHei UI Light', size = 16, weight = 'bold')
+		fuente_boton = font.Font (family = 'Microsoft YaHei UI Light', size = 12)
+		color_azul = '#214E77'
+		color_gris = '#CDD0D2'
+		color_gris2 = '#686B6D'
+		posicion_y = 115
+		posicion_x = 220
+		self.label_cadena = Label (self.ventana, text = 'Cadena:', font = fuente_label, fg = color_gris2, bg = 'white')
+		self.label_cadena.place (x = posicion_x - 106, y = posicion_y - 4)
+		self.entrada_cadena = Entry (self.ventana, bg = color_gris, bd = 0, font = fuente_entrada, cursor = 'ibeam')
+		self.entrada_cadena.place (x = posicion_x, y = posicion_y)
+		self.label_posicion = Label (self.ventana, text = 'Autómata:', font = fuente_label, fg = color_gris2, bg = 'white')
+		self.label_posicion.place (x = posicion_x - 130, y = posicion_y + 52)
+		self.combo_posicion = ttk.Combobox (self.ventana, state = 'readonly', font = fuente_entrada2, width = 22)
+		self.combo_posicion ['values'] = Posiciones
+		self.combo_posicion.place (x = posicion_x, y = posicion_y + 58)
+		self.boton_analisis_lexico_2 = Button (self.ventana, text = 'Validar cadena', font = fuente_boton,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd = 0, command = self.analisis_lexico_2)
+		self.boton_analisis_lexico_2.place (x = posicion_x - 35, y = posicion_y + 105)
+
+	def analisis_lexico_2 (self):
+		self.entrada_cadena.place_forget ()
+		self.label_cadena.place_forget ()
+		self.label_posicion.place_forget ()
+		self.combo_posicion.place_forget ()
+		self.boton_analisis_lexico_2.place_forget ()
+		cadena = self.entrada_cadena.get ()
+		posicion = self.combo_posicion.current ()
+		correcto = 'Secuencia de tokens:'
+		tokens = 'Token: 12\t\tLexema:HOLA\nToken: 12\t\tLexema:HOLA\nToken: 12\t\tLexema:HOLA'
+		"""
+		Automata = AFD ()
+		Automata = (Automatas [posicion])
+		Lex = Lexic (Automata, cadena)
+		token = 1
+		tokens = ''
+		while (token != 0):
+			token, lexema = Lex.get_token ()
+			tokens = tokens + 'Token: ' + str (token) + '\tLexema: ' + str (lexema) + '\n'
+		"""
+		color_azul = '#214E77'
+		color_gris = '#686B6D'
+		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
+		fuente_correcto = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
+		fuente_correcto2 = font.Font (family = 'Microsoft YaHei UI Light', size = 14, weight = 'bold')
+		self.label_correcto = Label (self.ventana, text = correcto, font = fuente_correcto, fg = color_gris,
+								bg = 'white')
+		self.label_correcto.place (relx = 0.12, rely = 0.04)
+		self.label_tokens = Label (self.ventana, text = tokens, font = fuente_correcto2, fg = color_gris,
+								bg = 'white')
+		self.label_tokens.place (relx = 0.2, rely = 0.15)
+		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command=self.regresar_menu_principal_5)
+		self.boton_menu_principal.place (relx = 0.26, rely = 0.85)
+		self.boton_otra_cadena = Button (self.ventana, text = 'Validar otra cadena', font = fuente_botones,
+								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.otro_analisis_lexico)
+		self.boton_otra_cadena.place (relx = 0.32, rely = 0.92)
+
+	def regresar_menu_principal_5 (self):
+		self.label_correcto.place_forget ()
+		self.label_tokens.place_forget ()
+		self.boton_menu_principal.place_forget ()
+		self.boton_otra_cadena.place_forget ()
+		self.mostrar_menu_principal ()
+
+	def otro_analisis_lexico (self):
+		self.label_correcto.place_forget ()
+		self.label_tokens.place_forget ()
+		self.boton_menu_principal.place_forget ()
+		self.boton_otra_cadena.place_forget ()
+		self.analisis_lexico ()
 
 os.system ("cls")
 global Automatas
