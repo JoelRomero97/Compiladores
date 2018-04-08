@@ -77,7 +77,6 @@ class AFN:
 		self.Estado_Inicial = Nuevo_Inicio
 		#Se actualiza el alfabeto del AFN con la unión de los alfabetos
 		self.Alfabeto = (self.Alfabeto).union (AFN_2.Alfabeto)
-		return self
 
 	def Concatenar_AFN (self, AFN_2):
 		#Cambiar las transiciones del estado inicial del AFN 2
@@ -97,7 +96,6 @@ class AFN:
 		self.Alfabeto = (self.Alfabeto).union (AFN_2.Alfabeto)
 		#El nuevo conjunto de estados será la union de los estados de ambos AFN
 		self.Estados = (self.Estados).union (AFN_2.Estados)
-		return self
 
 	def Cerradura_Positiva (self):
 		#Se crea un nuevo estado inicial
@@ -124,7 +122,6 @@ class AFN:
 		self.Estados_Aceptacion.add (Nuevo_Fin)
 		#Se actualiza el estado inicial del AFN
 		self.Estado_Inicial = Nuevo_Inicio
-		return self
 
 	def Cerradura_Kleene (self):
 		#Se crea un nuevo estado inicial
@@ -153,7 +150,6 @@ class AFN:
 		self.Estados_Aceptacion.add (Nuevo_Fin)
 		#Se actualiza el estado inicial del AFN
 		self.Estado_Inicial = Nuevo_Inicio
-		return self
 
 	def Cerradura_Opcional (self):
 		#Se crea un nuevo estado inicial
@@ -180,7 +176,6 @@ class AFN:
 		self.Estados_Aceptacion.add (Nuevo_Fin)
 		#Se actualiza el estado inicial del AFN
 		self.Estado_Inicial = Nuevo_Inicio
-		return self
 
 	def Cerradura_Epsilon (self, Estado, Conjunto = False):
 		Conjunto_Estados = set ()
@@ -326,20 +321,3 @@ class AFN:
 						fila [(list (automata.Alfabeto)).index (simbolo)] = aux2.id_estado
 			(automata.Tabla).append (fila)
 		return automata
-
-	def get_estados (self):
-		a = set ()
-		for e in self.Estados:
-			a.add (e.id_estado)
-		return a
-
-	def get_estado_inicial (self):
-		a = set ()
-		a.add ((self.Estado_Inicial).id_estado)
-		return a
-
-	def get_edos_aceptacion (self):
-		a = set ()
-		for e in self.Estados_Aceptacion:
-			a.add (e.id_estado)
-		return a

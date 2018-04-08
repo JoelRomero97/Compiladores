@@ -40,11 +40,9 @@ class Lexic:
 				estado_actual = fila [num_simbolo]
 				#Obtenemos el token de ese estado
 				token = fila [len (fila) - 1]
-
 				if (estado_actual == -1):
 					return token, posicion
 			posicion = posicion + 1
-
 		#Obtenemos toda la fila del respectivo estado actual
 		fila = self.Tabla [estado_actual + 1]
 		#Obtenemos el token de ese estado
