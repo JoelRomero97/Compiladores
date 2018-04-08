@@ -14,6 +14,8 @@ Se agrega opción para obtener la secuencia de tokens de una cadena ingresada a 
 - Mostrar quintupla: Muestra el estado inicial, estados de aceptación y alfabeto de un autómata.
 - Análisis léxico: Muestra la secuencia de tokens y lexemas según la cadena ingresada a partir de un AFD.
 
-# Autor
+# Autores
 
 Joel Mauricio Romero Gamarra
+
+Luis Ricardo Téllez Girón
