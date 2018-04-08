@@ -311,12 +311,10 @@ class Interfaz:
 		self.combo_posicion.place_forget ()
 		self.boton_menu_principal.place_forget ()
 		posicion = self.combo_posicion.current ()
-		print ('Automatas a unir: ')
-		for i in self.posiciones_unir:
-			print (i)
 		Automatas_Unir = []
 		for i in self.posiciones_unir:
 			Automatas_Unir.append (Automatas [i])
+		Automata = AFN ()
 		Automata = Automata.Union_Especial (Automatas_Unir)
 		Automatas [posicion] = Automata
 		self.mostrar_menu_principal ()
@@ -418,7 +416,7 @@ class Interfaz:
 		tokens = ''
 		while (token != 0):
 			token, lexema = Lex.get_token ()
-			tokens = tokens + 'Token: ' + str (token) + '\tLexema: ' + str (lexema) + '\n'
+			tokens = tokens + 'Token: ' + str (token) + '\t\tLexema: ' + str (lexema) + '\n'
 		color_azul = '#214E77'
 		color_gris = '#686B6D'
 		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
