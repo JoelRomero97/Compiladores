@@ -3,45 +3,44 @@ from Estados_Si import *
 from AFD import *
 
 class AFN:
-	def __init__ (self, simbolo = ''):
-		#Si no se recibe ningun simbolo, se inicializa todo a vacío
-		if (len (simbolo) == 0):
-			#Inicialización del estado inicial a 'null'
-			self.Estado_Inicial = None
-			#El conjunto del alfabeto se inicializa como un conjunto vacío
-			self.Alfabeto = set ()
-			#El conjunto de estados se inicializa como un conjunto vacío
-			self.Estados = set ()
-			#El conjunto de estados de aceptación se inicializa como un conjunto vacío
-			self.Estados_Aceptacion = set ()
-		#Si se recibe un simbolo, se crea un AFN básico
+	def __init__ (self):
+		#Inicialización del estado inicial a 'null'
+		self.Estado_Inicial = None
+		#El conjunto del alfabeto se inicializa como un conjunto vacío
+		self.Alfabeto = set ()
+		#El conjunto de estados se inicializa como un conjunto vacío
+		self.Estados = set ()
+		#El conjunto de estados de aceptación se inicializa como un conjunto vacío
+		self.Estados_Aceptacion = set ()
+
+	def Crear_AFN (self, simbolo):
+		#Se crea un estado inicial de tipo Estado como atributo del AFN
+		self.Estado_Inicial = Estado ()
+		#Se crea un estado final de tipo Estado
+		Estado_Final = Estado ()
+		#Se cambia el estado de la bandera a true para saber que es estado final
+		Estado_Final.Estado_Aceptacion = True
+		#El conjunto del alfabeto se inicializa como un conjunto vacío
+		self.Alfabeto = set ()
+		#Se agrega el símolo al alfabeto del AFN (si es un rango, se añaden todos los simbolos)
+		if (len (simbolo) == 1):
+			self.Alfabeto.add (simbolo)
+			#Se agrega una transición del estado inicial al estado final con el caracter 'simbolo'
+			(self.Estado_Inicial).AddTransition (Estado_Final, simbolo)
 		else:
-			#Se crea un estado inicial de tipo Estado como atributo del AFN
-			self.Estado_Inicial = Estado ()
-			#Se crea un estado final de tipo Estado
-			Estado_Final = Estado ()
-			#Se cambia el estado de la bandera a true para saber que es estado final
-			Estado_Final.Estado_Aceptacion = True
-			#El conjunto del alfabeto se inicializa como un conjunto vacío
-			self.Alfabeto = set ()
-			#Se agrega el símolo al alfabeto del AFN (si es un rango, se añaden todos los simbolos)
-			if (len (simbolo) == 1):
-				self.Alfabeto.add (simbolo)
-				#Se agrega una transición del estado inicial al estado final con el caracter 'simbolo'
-				(self.Estado_Inicial).AddTransition (Estado_Final, simbolo)
-			else:
-				(self.Estado_Inicial).AddTransition (Estado_Final, simbolo [0], simbolo [2])
-				for i in range (ord (simbolo [0]), ord (simbolo [2]) + 1):
-					self.Alfabeto.add (chr (i))
-			#El conjunto de estados se inicializa como un conjunto vacío
-			self.Estados = set ()
-			#Se agregan los estados al conjunto de Estados del AFN
-			self.Estados.add (self.Estado_Inicial)
-			self.Estados.add (Estado_Final)
-			#El conjunto de estados de aceptación se inicializa como un conjunto vacío
-			self.Estados_Aceptacion = set ()
-			#Se agrega el estado final del AFN como un estado de aceptación
-			self.Estados_Aceptacion.add (Estado_Final)
+			(self.Estado_Inicial).AddTransition (Estado_Final, simbolo [0], simbolo [2])
+			for i in range (ord (simbolo [0]), ord (simbolo [2]) + 1):
+				self.Alfabeto.add (chr (i))
+		#El conjunto de estados se inicializa como un conjunto vacío
+		self.Estados = set ()
+		#Se agregan los estados al conjunto de Estados del AFN
+		self.Estados.add (self.Estado_Inicial)
+		self.Estados.add (Estado_Final)
+		#El conjunto de estados de aceptación se inicializa como un conjunto vacío
+		self.Estados_Aceptacion = set ()
+		#Se agrega el estado final del AFN como un estado de aceptación
+		self.Estados_Aceptacion.add (Estado_Final)
+		return self
 	
 	def Unir_AFN (self, AFN_2):
 		#Se crea un nuevo estado inicial
@@ -77,6 +76,7 @@ class AFN:
 		self.Estado_Inicial = Nuevo_Inicio
 		#Se actualiza el alfabeto del AFN con la unión de los alfabetos
 		self.Alfabeto = (self.Alfabeto).union (AFN_2.Alfabeto)
+		return self
 
 	def Concatenar_AFN (self, AFN_2):
 		#Cambiar las transiciones del estado inicial del AFN 2
@@ -96,6 +96,7 @@ class AFN:
 		self.Alfabeto = (self.Alfabeto).union (AFN_2.Alfabeto)
 		#El nuevo conjunto de estados será la union de los estados de ambos AFN
 		self.Estados = (self.Estados).union (AFN_2.Estados)
+		return self
 
 	def Cerradura_Positiva (self):
 		#Se crea un nuevo estado inicial
@@ -122,6 +123,7 @@ class AFN:
 		self.Estados_Aceptacion.add (Nuevo_Fin)
 		#Se actualiza el estado inicial del AFN
 		self.Estado_Inicial = Nuevo_Inicio
+		return self
 
 	def Cerradura_Kleene (self):
 		#Se crea un nuevo estado inicial
@@ -150,6 +152,7 @@ class AFN:
 		self.Estados_Aceptacion.add (Nuevo_Fin)
 		#Se actualiza el estado inicial del AFN
 		self.Estado_Inicial = Nuevo_Inicio
+		return self
 
 	def Cerradura_Opcional (self):
 		#Se crea un nuevo estado inicial
@@ -176,6 +179,7 @@ class AFN:
 		self.Estados_Aceptacion.add (Nuevo_Fin)
 		#Se actualiza el estado inicial del AFN
 		self.Estado_Inicial = Nuevo_Inicio
+		return self
 
 	def Cerradura_Epsilon (self, Estado, Conjunto = False):
 		Conjunto_Estados = set ()
@@ -321,20 +325,3 @@ class AFN:
 						fila [(list (automata.Alfabeto)).index (simbolo)] = aux2.id_estado
 			(automata.Tabla).append (fila)
 		return automata
-
-	def get_estados (self):
-		a = set ()
-		for e in self.Estados:
-			a.add (e.id_estado)
-		return a
-
-	def get_estado_inicial (self):
-		a = set ()
-		a.add (self.Estado_Inicial.id_estado)
-		return a
-
-	def get_edos_aceptacion (self):
-		a = set ()
-		for e in self.Estados_Aceptacion:
-			a.add (e.id_estado)
-		return a

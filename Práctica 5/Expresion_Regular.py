@@ -17,7 +17,7 @@ class Expresion_Regular:
 		token = self.Lexic.get_token ()
 		if (token == Tokens.OR):
 			if (self.T (f1)):
-				f.Unir_AFN (f1)
+				f = f.Unir_AFN (f1)
 				if (self.Ep (f)):
 					return True
 			return False
@@ -35,7 +35,7 @@ class Expresion_Regular:
 		token = self.Lexic.get_token ()
 		if (token == Tokens.CONC):
 			if (self.C (f1)):
-				f.Concatenar_AFN (f1)
+				f = f.Concatenar_AFN (f1)
 				if (self.Tp (f)):
 					return True
 			return False
@@ -51,11 +51,11 @@ class Expresion_Regular:
 	def Cp (self, f):
 		token = self.Lexic.get_token ()
 		if (token == Tokens.MAS):
-			f.Cerradura_Positiva ()
+			f = f.Cerradura_Positiva ()
 		elif (token == Tokens.PROD):
-			f.Cerradura_Kleene ()
+			f = f.Cerradura_Kleene ()
 		elif (token == Tokens.OPC):
-			f.Cerradura_Opcional ()
+			f = f.Cerradura_Opcional ()
 		else:
 			self.Lexic.return_token ()
 			return True
@@ -72,7 +72,7 @@ class Expresion_Regular:
 					return True
 			return False
 		elif (token == Tokens.SIMB):
-			f = AFN (self.Lexic.lexema [0])
+			f = f.Crear_AFN(self.Lexic.lexema [0])
 			return True
 		elif (token == Tokens.CORI):
 			token = self.Lexic.get_token ()
@@ -86,11 +86,16 @@ class Expresion_Regular:
 						token = self.Lexic.get_token ()
 						if (token == Tokens.CORD):
 							if (simb2 > simb1):
-								f = AFN (simb1 + '-' + simb2)
+								f = f.Crear_AFN(simb1 + '-' + simb2)
+								return True
+				return False
 		elif (token == Tokens.DIAG):
 			token = self.Lexic.get_token ()
 			simbolos = {10:'|', 20:'&', 30:'+', 40:'*', 50:'?', 60:'(', 70:')', 80:'[', 90:'-', 100:']', 110:'\\'}
 			for i in range (10, 120, 10):
 				if (token == i):
-					f = AFN (simbolos [i])
+					f = f.Crear_AFN(simbolos [i])
+					break
+			self.Lexic.token = 120
+			return True
 		return False

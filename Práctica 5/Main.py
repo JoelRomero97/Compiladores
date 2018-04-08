@@ -136,14 +136,6 @@ class Interfaz:
 		expresion_regular = Expresion_Regular (Lexico)
 		if (expresion_regular.E (Automata)):
 			correcto = 'AFN creado correctamente'
-			token = 1
-			while (token > 0):
-				token = Lexico.get_token ()
-				print ('Token: ' + str (token) + '\tLexema: \'' + str (Lexico.lexema) + '\'')
-			print ('\n\nAlfabeto: ', Automata.Alfabeto)
-			print ('\n\nEstados: ', Automata.get_estados ())
-			print ('\n\nEstado inicial: ', Automata.get_estado_inicial ())
-			print ('\n\nEstados de aceptación: ', Automata.get_edos_aceptacion ())
 		else:
 			correcto = 'Error al crear el AFN :('
 		Automatas [posicion] = Automata
@@ -204,6 +196,10 @@ class Interfaz:
 		self.label_posicion.place_forget ()
 		self.combo_posicion.place_forget ()
 		self.boton_validar_cadena_2.place_forget ()
+		color_azul = '#214E77'
+		color_gris = '#686B6D'
+		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
+		fuente_correcto = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
 		cadena = self.entrada_cadena.get ()
 		posicion = self.combo_posicion.current ()
 		Automata = AFN ()
@@ -217,11 +213,7 @@ class Interfaz:
 			correcto = 'Cadena no aceptada por el AFN'
 			self.label_correcto = Label (self.ventana, text = correcto, font = fuente_correcto, fg = color_gris,
 								bg = 'white')
-			self.label_correcto.place (relx = 0.05, rely = 0.2)
-		color_azul = '#214E77'
-		color_gris = '#686B6D'
-		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
-		fuente_correcto = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
+			self.label_correcto.place (relx = 0.045, rely = 0.2)
 		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
 								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command=self.regresar_menu_principal_2)
 		self.boton_menu_principal.place (relx = 0.26, rely = 0.35)
