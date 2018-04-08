@@ -9,6 +9,8 @@ Creación por el método de thompson un Autómata Finito No Determinista por med
 - Operación ?: Realiza la operación opcional sobre un AFN seleccionado.
 - Validar cadena: A partir de un autómata creado, se ingresan cadenas para validar si pertenecen o no al lenguaje del AFN.
 
-# Autor
+# Autores
 
 Joel Mauricio Romero Gamarra
+
+Luis Ricardo Téllez Girón
