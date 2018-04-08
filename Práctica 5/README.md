@@ -8,7 +8,7 @@ Se crean los autómatas finitos deterministas por medio de expresiones regulares
   - +: Cerradura Positiva
   - *: Cerradura de Kleene
   - ?: Cerradura Opcional
-  - [a-z]: Rangos (dentro de corchetes)
+  - Rangos: Dentro de corchetes y separados por un guión medio.
   - \: Anteceder a un símbolo especial (Ejemplo: &, |, +, *, ?, (, ), [, ], -) para que forme parte del alfabeto y no sea una operación.
 - Validar cadena: A partir de un autómata creado, se ingresan cadenas para validar si pertenecen o no al lenguaje del AFN.
 - Unir Autómatas: Unión de n autómatas definidos por el usuario manteniendo los estados de aceptación de cada uno.
