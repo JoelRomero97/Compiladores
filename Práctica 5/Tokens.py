@@ -6,8 +6,8 @@ class Tokens:
 	OPC = 50
 	PARI = 60
 	PARD = 70
-	GUION = 80
-	CORI = 90
+	CORI = 80
+	GUION = 90
 	CORD = 100
 	DIAG = 110
 	SIMB = 120

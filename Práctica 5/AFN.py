@@ -321,3 +321,20 @@ class AFN:
 						fila [(list (automata.Alfabeto)).index (simbolo)] = aux2.id_estado
 			(automata.Tabla).append (fila)
 		return automata
+
+	def get_estados (self):
+		a = set ()
+		for e in self.Estados:
+			a.add (e.id_estado)
+		return a
+
+	def get_estado_inicial (self):
+		a = set ()
+		a.add (self.Estado_Inicial.id_estado)
+		return a
+
+	def get_edos_aceptacion (self):
+		a = set ()
+		for e in self.Estados_Aceptacion:
+			a.add (e.id_estado)
+		return a
