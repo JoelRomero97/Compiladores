@@ -1,6 +1,9 @@
 from tkinter import *
 from tkinter import font
 from tkinter import ttk
+from AFN import *
+from AFD import *
+from Lexic import *
 from PIL import Image, ImageTk
 import os
 import sys
@@ -190,7 +193,9 @@ class Interfaz:
 		posicion = self.combo_posicion.current ()
 		correcto = 'Cadena aceptada por el AFN'
 		"""
-		if (validacion (cadena)):
+		Automata = AFN ()
+		Automata = (Automatas [posicion])
+		if (Automata.Validar_Cadena (cadena)):
 			correcto = 'Cadena aceptada por el AFN'
 			self.label_correcto = Label (self.ventana, text = correcto, font = fuente_correcto, fg = color_gris,
 								bg = 'white')
@@ -306,9 +311,15 @@ class Interfaz:
 		self.combo_posicion.place_forget ()
 		self.boton_menu_principal.place_forget ()
 		posicion = self.combo_posicion.current ()
+		print ('Automatas a unir: ')
+		for i in self.posiciones_unir:
+			print (i)
 		"""
-		AQUI SE DEBEN UNIR LOS AUTÓMATAS 
-		POSICIONES GUARDADAS EN: self.posiciones_unir
+		Automatas_Unir = []
+		for i in self.posiciones_unir:
+			Automatas_Unir.append (Automatas [i])
+		Automata = Automata.Union_Especial (Automatas_Unir)
+		Automatas [posicion] = Automata
 		"""
 		self.mostrar_menu_principal ()
 
@@ -339,7 +350,9 @@ class Interfaz:
 		posicion = self.combo_posicion.current ()
 		correcto = 'AFN convertido correctamente'
 		"""
-		AQUI SE TENE QUE CONVERTIR EL AFN EN AFD
+		Automata = AFD ()
+		Automata = (Automatas [posicion]).AFN_To_AFD ()
+		Automatas [posicion] = Automata
 		"""
 		color_azul = '#214E77'
 		color_gris = '#686B6D'
@@ -361,10 +374,6 @@ class Interfaz:
 		self.boton_menu_principal.place_forget ()
 		self.boton_convertir_otro_AFN.place_forget ()
 		posicion = self.combo_posicion.current ()
-		"""
-		AQUI SE DEBEN UNIR LOS AUTÓMATAS 
-		POSICIONES GUARDADAS EN: self.posiciones_unir
-		"""
 		self.mostrar_menu_principal ()
 
 	def convertir_otro_AFN (self):
