@@ -13,6 +13,8 @@ Se agrega opción para realizar la conversión de Autómata Finito NO Determinis
 - Convertir a AFD: Conversión de un AFN a un AFD
 - Mostrar quintupla: Muestra el estado inicial, estados de aceptación y alfabeto de un autómata.
 
-# Autor
+# Autores
 
 Joel Mauricio Romero Gamarra
+
+Luis Ricardo Téllez Girón
