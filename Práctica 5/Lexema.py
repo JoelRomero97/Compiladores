@@ -11,6 +11,7 @@ class Lexema:
 	def get_token (self):
 		if self.caracter_actual == len (self.expresion):
 			self.lexema = ''
+			self.pila.append (self.caracter_actual)
 			return 0
 		#PIPE (OR)
 		if self.expresion [self.caracter_actual] == '|':
