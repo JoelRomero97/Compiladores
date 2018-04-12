@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import font
 from PIL import Image, ImageTk
+from Lexema import *
+from Calculadora import *
 import os
 import sys
 
@@ -54,8 +56,6 @@ class Interfaz:
 		self.boton_resolver.place (x = posicion_x, y = posicion_y)
 		self.boton_posfijo.place (x = posicion_x, y = posicion_y + 50)
 		self.boton_prefijo.place (x = posicion_x, y = posicion_y + 100)
-		#for name in sorted(font.families()):
-		#	print (name)
 
 	def ocultar_menu_principal (self):
 		self.label_menu.place_forget ()
@@ -87,14 +87,13 @@ class Interfaz:
 		self.label_expresion.place_forget ()
 		self.boton_resolver_2.place_forget ()
 		expresion = self.entrada_expresion.get ()
-		print ('Expresion ingresada: ' + expresion)
-		resultado = expresion
-		"""
-		resultado = calcular (expresion)
-		En la variable 'expresion' ya está guardada la expresión a resolver en un string.
-		En resultado se almacena el resultado final de la expresión para mostrarse posteriormente.
-		BORRAR LÍNEA 91 Y DEJAR LÍNEA 93
-		"""
+		lexico = Lexema (expresion)
+		calculadora = Calculadora (lexico)
+		evaluacion = [0,'','']
+		if (calculadora.E (evaluacion)):
+			resultado = evaluacion [0]
+		else:
+			resultado = 'Error al resolver'
 		color_azul = '#214E77'
 		color_gris = '#686B6D'
 		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
@@ -152,14 +151,13 @@ class Interfaz:
 		self.label_expresion.place_forget ()
 		self.boton_posfijo_2.place_forget ()
 		expresion = self.entrada_expresion.get ()
-		print ('Expresion ingresada: ' + expresion)
-		resultado = expresion
-		"""
-		resultado = convertir_posfijo (expresion)
-		En la variable 'expresion' ya está guardada la expresión a convertir a posfijo en un string.
-		En resultado se almacena la expresión convertida en posfijo.
-		BORRAR LÍNEA 156 Y DEJAR LÍNEA 158
-		"""
+		lexico = Lexema (expresion)
+		calculadora = Calculadora (lexico)
+		evaluacion = [0,'','']
+		if (calculadora.E (evaluacion)):
+			resultado = evaluacion [2]
+		else:
+			resultado = 'Error al convertir'
 		color_azul = '#214E77'
 		color_gris = '#686B6D'
 		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
@@ -167,7 +165,7 @@ class Interfaz:
 		self.label_resultado = Label (self.ventana, text = 'Posfijo:', font = fuente_resultado, fg = color_gris,
 								bg = 'white')
 		self.label_resultado.place (relx = 0.15, rely = 0.2)
-		self.resultado = Label (self.ventana, text = str (resultado), font = fuente_resultado, fg = color_gris,
+		self.resultado = Label (self.ventana, text = resultado, font = fuente_resultado, fg = color_gris,
 								bg = 'white')
 		self.resultado.place (relx = 0.38, rely = 0.2)
 		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
@@ -208,14 +206,13 @@ class Interfaz:
 		self.label_expresion.place_forget ()
 		self.boton_prefijo_2.place_forget ()
 		expresion = self.entrada_expresion.get ()
-		print ('Expresion ingresada: ' + expresion)
-		resultado = expresion
-		"""
-		resultado = convertir_prefijo (expresion)
-		En la variable 'expresion' ya está guardada la expresión a convertir a prefijo en un string.
-		En resultado se almacena la expresión convertida en prefijo.
-		BORRAR LÍNEA 212 Y DEJAR LÍNEA 214
-		"""
+		lexico = Lexema (expresion)
+		calculadora = Calculadora (lexico)
+		evaluacion = [0,'','']
+		if (calculadora.E (evaluacion)):
+			resultado = evaluacion [1]
+		else:
+			resultado = 'Error al convertir'
 		color_azul = '#214E77'
 		color_gris = '#686B6D'
 		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
