@@ -87,25 +87,30 @@ class Interfaz:
 		self.label_expresion.place_forget ()
 		self.boton_resolver_2.place_forget ()
 		expresion = self.entrada_expresion.get ()
-		lexico = Lexema (expresion)
-		calculadora = Calculadora (lexico)
-		evaluacion = [0,'','']
-		if (calculadora.E (evaluacion)):
-			resultado = evaluacion [0]
-		else:
-			resultado = 'Error al resolver'
 		color_azul = '#214E77'
 		color_gris = '#686B6D'
 		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
 		fuente_resultado = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
 		posicion_y = 120
 		posicion_x = 150
-		self.label_resultado = Label (self.ventana, text = 'Resultado:', font = fuente_resultado, fg = color_gris,
+		lexico = Lexema (expresion)
+		calculadora = Calculadora (lexico)
+		evaluacion = [0,'','']
+		if (calculadora.E (evaluacion)):
+			resultado = evaluacion [0]
+			self.label_resultado = Label (self.ventana, text = 'Resultado:', font = fuente_resultado, fg = color_gris,
 								bg = 'white')
-		self.label_resultado.place (x = posicion_x, y = posicion_y)
-		self.resultado = Label (self.ventana, text = str (resultado), font = fuente_resultado, fg = color_gris,
+			self.label_resultado.place (x = posicion_x, y = posicion_y)
+			self.resultado = Label (self.ventana, text = str (resultado), font = fuente_resultado, fg = color_gris,
+									bg = 'white')
+			self.resultado.place (x = posicion_x + 160, y = posicion_y)
+		else:
+			resultado = 'Error: Expresión incorrecta'
+			self.label_resultado = Label (self.ventana, text = 'Resultado:', font = fuente_resultado, fg = color_gris,
 								bg = 'white')
-		self.resultado.place (x = posicion_x + 160, y = posicion_y)
+			self.resultado = Label (self.ventana, text = str (resultado), font = fuente_resultado, fg = color_gris,
+									bg = 'white')
+			self.resultado.place (x = posicion_x - 80, y = posicion_y)
 		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
 								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.regresar_menu_principal)
 		self.boton_menu_principal.place (relx = 0.25, rely = 0.35)
@@ -151,23 +156,28 @@ class Interfaz:
 		self.label_expresion.place_forget ()
 		self.boton_posfijo_2.place_forget ()
 		expresion = self.entrada_expresion.get ()
+		color_azul = '#214E77'
+		color_gris = '#686B6D'
+		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
+		fuente_resultado = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
 		lexico = Lexema (expresion)
 		calculadora = Calculadora (lexico)
 		evaluacion = [0,'','']
 		if (calculadora.E (evaluacion)):
 			resultado = evaluacion [2]
+			self.label_resultado = Label (self.ventana, text = 'Posfijo:', font = fuente_resultado, fg = color_gris,
+								bg = 'white')
+			self.label_resultado.place (relx = 0.15, rely = 0.2)
+			self.resultado = Label (self.ventana, text = resultado, font = fuente_resultado, fg = color_gris,
+									bg = 'white')
+			self.resultado.place (relx = 0.38, rely = 0.2)
 		else:
-			resultado = 'Error al convertir'
-		color_azul = '#214E77'
-		color_gris = '#686B6D'
-		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
-		fuente_resultado = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
-		self.label_resultado = Label (self.ventana, text = 'Posfijo:', font = fuente_resultado, fg = color_gris,
+			resultado = 'Error: Expresión incorrecta'
+			self.label_resultado = Label (self.ventana, text = 'Resultado:', font = fuente_resultado, fg = color_gris,
 								bg = 'white')
-		self.label_resultado.place (relx = 0.15, rely = 0.2)
-		self.resultado = Label (self.ventana, text = resultado, font = fuente_resultado, fg = color_gris,
-								bg = 'white')
-		self.resultado.place (relx = 0.38, rely = 0.2)
+			self.resultado = Label (self.ventana, text = str (resultado), font = fuente_resultado, fg = color_gris,
+									bg = 'white')
+			self.resultado.place (relx = 0.14, rely = 0.2)
 		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
 								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.regresar_menu_principal)
 		self.boton_menu_principal.place (relx = 0.25, rely = 0.35)
@@ -206,23 +216,28 @@ class Interfaz:
 		self.label_expresion.place_forget ()
 		self.boton_prefijo_2.place_forget ()
 		expresion = self.entrada_expresion.get ()
+		color_azul = '#214E77'
+		color_gris = '#686B6D'
+		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
+		fuente_resultado = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
 		lexico = Lexema (expresion)
 		calculadora = Calculadora (lexico)
 		evaluacion = [0,'','']
 		if (calculadora.E (evaluacion)):
 			resultado = evaluacion [1]
+			self.label_resultado = Label (self.ventana, text = 'Prefijo:', font = fuente_resultado, fg = color_gris,
+								bg = 'white')
+			self.label_resultado.place (relx = 0.15, rely = 0.2)
+			self.resultado = Label (self.ventana, text = str (resultado), font = fuente_resultado, fg = color_gris,
+									bg = 'white')
+			self.resultado.place (relx = 0.38, rely = 0.2)
 		else:
-			resultado = 'Error al convertir'
-		color_azul = '#214E77'
-		color_gris = '#686B6D'
-		fuente_botones = font.Font (family = 'Microsoft YaHei UI Light', size = 12, weight = 'bold')
-		fuente_resultado = font.Font (family = 'Microsoft YaHei UI Light', size = 22, weight = 'bold')
-		self.label_resultado = Label (self.ventana, text = 'Prefijo:', font = fuente_resultado, fg = color_gris,
+			resultado = 'Error: Expresión incorrecta'
+			self.label_resultado = Label (self.ventana, text = 'Prefijo:', font = fuente_resultado, fg = color_gris,
 								bg = 'white')
-		self.label_resultado.place (relx = 0.15, rely = 0.2)
-		self.resultado = Label (self.ventana, text = str (resultado), font = fuente_resultado, fg = color_gris,
-								bg = 'white')
-		self.resultado.place (relx = 0.38, rely = 0.2)
+			self.resultado = Label (self.ventana, text = str (resultado), font = fuente_resultado, fg = color_gris,
+									bg = 'white')
+			self.resultado.place (relx = 0.14, rely = 0.2)
 		self.boton_menu_principal = Button (self.ventana, text = 'Regresar al menu principal', font = fuente_botones,
 								cursor = 'hand2', fg = color_azul, bg = 'white', bd=0, command = self.regresar_menu_principal)
 		self.boton_menu_principal.place (relx = 0.25, rely = 0.35)
