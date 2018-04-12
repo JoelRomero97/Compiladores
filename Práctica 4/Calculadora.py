@@ -1,4 +1,5 @@
 from Tokens import *
+from math import *
 
 class Calculadora:
 
@@ -49,6 +50,8 @@ class Calculadora:
 
 	def F (self, v):
 		token = (self.lexic).getToken ()
+		print ('Token: ', token)
+		print ('Lexema: \'' + self.lexic.lexema + '\'')
 		if (token == Tokens.parI):
 			if (self.E (v)):
 				token = (self.lexic).getToken ()
@@ -59,4 +62,64 @@ class Calculadora:
 			v [0] = float (self.lexic.lexema)
 			v [1] = v[2] = self.lexic.lexema
 			return True
+		elif (token == Tokens.SIN):
+			token = (self.lexic).getToken ()
+			print ('Lexema: ', self.lexic.lexema)
+			if (token == Tokens.parI):
+				if (self.E (v)):
+					v [0] = float (sin (v [0]))
+					v[1] = 'SIN' + ' ' + v [1]
+					v[2] = v [2] + ' ' + 'SIN'
+					token = (self.lexic).getToken ()
+					if (token == Tokens.parD):
+						return True
+				return False
+		elif (token == Tokens.COS):
+			token = (self.lexic).getToken ()
+			print ('Lexema: ', self.lexic.lexema)
+			if (token == Tokens.parI):
+				if (self.E (v)):
+					v [0] = float (cos (v [0]))
+					v[1] = 'COS' + ' ' + v [1]
+					v[2] = v [2] + ' ' + 'COS'
+					token = (self.lexic).getToken ()
+					if (token == Tokens.parD):
+						return True
+				return False
+		elif (token == Tokens.TAN):
+			token = (self.lexic).getToken ()
+			print ('Lexema: ', self.lexic.lexema)
+			if (token == Tokens.parI):
+				if (self.E (v)):
+					v [0] = float (tan (v [0]))
+					v[1] = 'TAN' + ' ' + v [1]
+					v[2] = v [2] + ' ' + 'TAN'
+					token = (self.lexic).getToken ()
+					if (token == Tokens.parD):
+						return True
+				return False
+		elif (token == Tokens.log):
+			token = (self.lexic).getToken ()
+			print ('Lexema: ', self.lexic.lexema)
+			if (token == Tokens.parI):
+				if (self.E (v)):
+					v [0] = float (log10 (v [0]))
+					v[1] = 'log' + ' ' + v [1]
+					v[2] = v [2] + ' ' + 'log'
+					token = (self.lexic).getToken ()
+					if (token == Tokens.parD):
+						return True
+				return False
+		elif (token == Tokens.ln):
+			token = (self.lexic).getToken ()
+			print ('Lexema: ', self.lexic.lexema)
+			if (token == Tokens.parI):
+				if (self.E (v)):
+					v [0] = float (log1p (v [0]))
+					v[1] = 'ln' + ' ' + v [1]
+					v[2] = v [2] + ' ' + 'ln'
+					token = (self.lexic).getToken ()
+					if (token == Tokens.parD):
+						return True
+				return False
 		return False

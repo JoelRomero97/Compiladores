@@ -6,3 +6,8 @@ class Tokens:
 	parD = 60
 	parI = 50
 	num = 70
+	SIN = 80
+	COS = 90
+	TAN = 100
+	log = 110
+	ln = 120

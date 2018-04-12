@@ -59,6 +59,31 @@ class Lexema:
 			if (re.match ("[\d+(\.d+)?]", aux)):
 				self.token = 70
 				self.lexema = aux
+		elif (re.match ("SIN", self.cadena [self.carAct:self.carAct + 3])):
+			self.indIniLex = self.carAct
+			self.token = 80
+			self.lexema = self.cadena [self.carAct:self.carAct + 3]
+			self.carAct = self.carAct + 3
+		elif (re.match ("COS", self.cadena [self.carAct:self.carAct + 3])):
+			self.indIniLex = self.carAct
+			self.token = 90
+			self.lexema = self.cadena [self.carAct:self.carAct + 3]
+			self.carAct = self.carAct + 3
+		elif (re.match ("TAN", self.cadena [self.carAct:self.carAct + 3])):
+			self.indIniLex = self.carAct
+			self.token = 100
+			self.lexema = self.cadena [self.carAct:self.carAct + 3]
+			self.carAct = self.carAct + 3
+		elif (re.match ("log", self.cadena [self.carAct:self.carAct + 3])):
+			self.indIniLex = self.carAct
+			self.token = 110
+			self.lexema = self.cadena [self.carAct:self.carAct + 3]
+			self.carAct = self.carAct + 3
+		elif (re.match ("ln", self.cadena [self.carAct:self.carAct + 2])):
+			self.indIniLex = self.carAct
+			self.token = 120
+			self.lexema = self.cadena [self.carAct:self.carAct + 2]
+			self.carAct = self.carAct + 2
 		else:
 			return -1
 		self.pila.append (self.indIniLex)
